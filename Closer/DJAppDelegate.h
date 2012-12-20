@@ -17,5 +17,7 @@
 @property (strong) ThingsApplication *things;
 @property (strong) NSString *pointsDisplay;
 @property (strong) NSMutableAttributedString *report;
-- (IBAction)computePoints:(id)sender;
+@property (assign) NSInteger totalPoints;
+- (IBAction)closeBooks:(id)sender;
+- (IBAction)refreshReport:(id)sender;
 @end

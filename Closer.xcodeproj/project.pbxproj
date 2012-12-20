@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
+		FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
+		FD7C77E616835D130004030C /* NSImage+PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E516835D130004030C /* NSImage+PNG.m */; };
+		FD7C77E8168386FC0004030C /* Icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FD7C77E7168386FC0004030C /* Icon.iconset */; };
 		FDE60EC31680B7C800AE8703 /* Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FDE60EC21680B7C800AE8703 /* Format.mustache */; };
 		FDE60EC61680BB3200AE8703 /* DJTodo.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE60EC51680BB3200AE8703 /* DJTodo.m */; };
 		FDE60EC71680C0C500AE8703 /* GRMustache.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE60E8E1680B2B500AE8703 /* GRMustache.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
@@ -43,6 +46,11 @@
 /* Begin PBXFileReference section */
 		FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		FD601EC0167F759E008DDBF0 /* Things.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Things.h; sourceTree = "<group>"; };
+		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
+		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
+		FD7C77E416835D130004030C /* NSImage+PNG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+PNG.h"; sourceTree = "<group>"; };
+		FD7C77E516835D130004030C /* NSImage+PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+PNG.m"; sourceTree = "<group>"; };
+		FD7C77E7168386FC0004030C /* Icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Icon.iconset; sourceTree = "<group>"; };
 		FDE60E8C1680B2B500AE8703 /* GRMustache_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRMustache_private.h; sourceTree = "<group>"; };
 		FDE60E8D1680B2B500AE8703 /* GRMustache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRMustache.h; sourceTree = "<group>"; };
 		FDE60E8E1680B2B500AE8703 /* GRMustache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GRMustache.m; sourceTree = "<group>"; };
@@ -232,8 +240,12 @@
 		FDED2AE81678C90E00BC416C /* Closer */ = {
 			isa = PBXGroup;
 			children = (
+				FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */,
+				FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */,
 				FDED2AF41678C90E00BC416C /* DJAppDelegate.h */,
 				FDED2AF51678C90E00BC416C /* DJAppDelegate.m */,
+				FD7C77E416835D130004030C /* NSImage+PNG.h */,
+				FD7C77E516835D130004030C /* NSImage+PNG.m */,
 				FDE60E8B1680B2A800AE8703 /* GRMustache */,
 				FDED2AF71678C90F00BC416C /* MainMenu.xib */,
 				FD601EC0167F759E008DDBF0 /* Things.h */,
@@ -247,6 +259,7 @@
 		FDED2AE91678C90E00BC416C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FD7C77E7168386FC0004030C /* Icon.iconset */,
 				FDE60EC21680B7C800AE8703 /* Format.mustache */,
 				FDED2AEA1678C90E00BC416C /* Closer-Info.plist */,
 				FDED2AEB1678C90E00BC416C /* InfoPlist.strings */,
@@ -313,6 +326,7 @@
 				FDED2AF31678C90E00BC416C /* Credits.rtf in Resources */,
 				FDED2AF91678C90F00BC416C /* MainMenu.xib in Resources */,
 				FDE60EC31680B7C800AE8703 /* Format.mustache in Resources */,
+				FD7C77E8168386FC0004030C /* Icon.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,8 +359,10 @@
 				FDE60EDA1680C0C500AE8703 /* GRMustacheToken.m in Sources */,
 				FDE60EDB1680C0C500AE8703 /* GRMustacheVariableTag.m in Sources */,
 				FDED2AEF1678C90E00BC416C /* main.m in Sources */,
+				FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */,
 				FDED2AF61678C90E00BC416C /* DJAppDelegate.m in Sources */,
 				FDE60EC61680BB3200AE8703 /* DJTodo.m in Sources */,
+				FD7C77E616835D130004030C /* NSImage+PNG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
