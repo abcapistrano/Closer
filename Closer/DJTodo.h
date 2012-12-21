@@ -10,5 +10,6 @@
 
 @interface DJTodo : NSObject
 @property (strong) NSString *name;
+@property (strong) NSString *projectName;
 @property (assign) NSInteger points;
 @end

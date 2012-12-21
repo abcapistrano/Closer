@@ -36,6 +36,11 @@
 		  text-align: right;
 	  
 	  }
+	  
+	  span.projectName {
+	  
+		  font-style:italic;
+	  }
 
   </style>
 </head>
@@ -73,7 +78,15 @@
 			
 		    {{# toDosDisplayed}}
 		    <tr>
-		    	<td>{{ name }}</td>
+		    	<td>
+					
+					{{#projectName}}
+					<span class="projectName"> {{projectName}}: </span>
+					{{/projectName}}
+					
+					 {{ name }}
+				 
+				 </td>
 		    	<td class="points"> {{ points }}</td>
 		    </tr>
 		    {{/ toDosDisplayed}}
