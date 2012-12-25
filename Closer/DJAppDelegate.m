@@ -136,7 +136,7 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     __block NSInteger totalPoints = carryOver;
     
     NSMutableArray *toDosDisplayed = [NSMutableArray array];
-    
+      
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
         
         NSString *toDoName = toDo.name;
@@ -159,11 +159,13 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
             totalPoints = totalPoints + points;
             
         }
+     
+     
         
         
-        
-        
-        
+
+     
+     
     }];
     
     
