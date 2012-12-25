@@ -14,7 +14,6 @@
 #import "Things.h"
 #import "NSApplication+ESSApplicationCategory.h"
 #import "NSImage+PNG.h"
-
 NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
 NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 
@@ -75,9 +74,16 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
                                
                                NSImage *img = [[NSImage alloc] initWithData:[self.viewer dataWithPDFInsideRect:[self.viewer bounds]]];
                               
+                               NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
+                               [email performWithItems:@[img]];
+                               
+                               
+                               
+                               
+                               /*
                                NSString *path = [@"~/Desktop/points.png" stringByExpandingTildeInPath];
                                [img saveAsPNGToURL:[NSURL fileURLWithPath:path]];
-                                
+                                */
                                
                                
                                [self refreshReport:sender];
@@ -116,9 +122,12 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     
     NSDate *lastCloseDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@", lastCloseDate];
+    
     [toDos filterUsingPredicate:pred];
+    NSArray *filteredTodos = [toDos get];
 
-    NSArray *names = [toDos arrayByApplyingSelector:@selector(name)];
+    
+    
     NSRegularExpression *exp = [[NSRegularExpression alloc] initWithPattern:@"[-+]?\\d+$" options:0
                                                                       error:NULL];
     
@@ -127,35 +136,36 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     __block NSInteger totalPoints = carryOver;
     
     NSMutableArray *toDosDisplayed = [NSMutableArray array];
-    
-    [names enumerateObjectsUsingBlock:^(NSString* toDo, NSUInteger idx, BOOL *stop) {
+      
+    [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
         
-        NSTextCheckingResult *result = [exp firstMatchInString:toDo options:0 range:NSMakeRange(0, [toDo length])];
+        NSString *toDoName = toDo.name;
+        
+        NSTextCheckingResult *result = [exp firstMatchInString:toDoName options:0 range:NSMakeRange(0, [toDoName length])];
         
         if (result) {
-            NSInteger points = [[toDo substringWithRange:result.range] integerValue];
-            
+            NSInteger points = [[toDoName substringWithRange:result.range] integerValue];
+          
             DJTodo *aTodo = [DJTodo new];
             NSRange nameRange = NSMakeRange(0, result.range.location-1);
-            
-            
-            
-            
-            
-            aTodo.name =   [toDo substringWithRange:nameRange];
+            aTodo.name =   [toDoName substringWithRange:nameRange];
             aTodo.points = points;
+            aTodo.projectName = toDo.project.name;
             
             [toDosDisplayed addObject:aTodo];
+            
             
             
             totalPoints = totalPoints + points;
             
         }
+     
+     
         
         
-        
-        
-        
+
+     
+     
     }];
     
     
