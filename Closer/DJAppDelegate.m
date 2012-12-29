@@ -184,9 +184,9 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     [df setTimeStyle:NSDateFormatterShortStyle];
     
     NSDictionary *data = @{
-        @"pointsCarryover" : [NSNumber numberWithInteger:carryOver],
+        @"pointsCarryover" : @(carryOver),
         @"date": [df stringFromDate:[NSDate date]],
-        @"totalPoints" : [NSNumber numberWithInteger:totalPoints],
+        @"totalPoints" : @(totalPoints),
         @"toDosDisplayed": toDosDisplayed,
     
     };
