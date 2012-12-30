@@ -73,7 +73,7 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
                        @"Proceed",
                        @"Cancel",
                        nil,
-                       self.mainWindow,
+                       self.messageEditorWindow,
                        nil,
 
                        ^(void *context, NSInteger returnCode){
@@ -270,44 +270,45 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
     // Do not proceed if the project named "Accountability Report Builder" is not complete.
     [self refreshReport:sender];
     [self showMissingARBWarning];
+    [self processARB];
 
-    [self showIrreversibleActionWarningWithCompletionHandler:^{
+    [NSApp beginSheet:self.messageEditorWindow
+       modalForWindow:self.mainWindow
+          didEndBlock:^(NSInteger returnCode) {
 
-
-        [self processARB];
-        [NSApp beginSheet:self.messageEditorWindow
-           modalForWindow:self.mainWindow
-              didEndBlock:^(NSInteger returnCode) {
-
-                  if (returnCode == NSOKButton) {
-                      [self closeBooks];
-                      [self screenshotPointsReport];
-                      [self sendReport:self];
-                      [self refreshReport:self];
+              if (returnCode == NSOKButton) {
+                  [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
+                  [self screenshotPointsReport];
+                  [self sendReport:self];
+                  [self refreshReport:self];
 
 
 
 
 
 
-                  }
-                  
-                  
               }
-         ];
+              
+              
+          }
+     ];
 
-     
-    
-    
-    }];
+
 };
 
 
 - (IBAction)send:(id)sender {
 
-    [NSApp endSheet:self.messageEditorWindow returnCode:NSOKButton];
-    [self.messageEditorWindow orderOut:self];
+    [self showIrreversibleActionWarningWithCompletionHandler:^{
 
+        [NSApp endSheet:self.messageEditorWindow returnCode:NSOKButton];
+        [self.messageEditorWindow orderOut:self];
+        
+        
+    }];
+
+
+    
 
 }
 

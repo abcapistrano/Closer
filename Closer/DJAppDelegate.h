@@ -14,7 +14,6 @@
 @property (assign) IBOutlet NSWindow *mainWindow;
 @property (assign) IBOutlet WebView *viewer;
 @property (unsafe_unretained) IBOutlet NSWindow *messageEditorWindow;
-@property (weak) IBOutlet NSButton *sendButton;
 
 
 @property (strong) ThingsApplication *things;

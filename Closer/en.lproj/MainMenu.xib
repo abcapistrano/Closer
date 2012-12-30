@@ -269,7 +269,7 @@
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 								</object>
-								<object class="NSMenuItem" id="122021251">
+								<object class="NSMenuItem" id="263857086">
 									<reference key="NSMenu" ref="720053764"/>
 									<string key="NSTitle">Resend Last Report</string>
 									<string key="NSKeyEquiv">l</string>
@@ -1374,7 +1374,7 @@
 					<reference key="NSNextKeyView" ref="872886629"/>
 					<string key="NSReuseIdentifierKey">_NS:20</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 900}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -1965,7 +1965,7 @@ wGw</bytes>
 					<reference key="NSNextKeyView" ref="363579697"/>
 					<string key="NSReuseIdentifierKey">_NS:20</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 900}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">MessageEditor</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -2724,7 +2724,7 @@ wGw</bytes>
 					<object class="IBActionConnection" key="connection">
 						<string key="label">sendReport:</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="122021251"/>
+						<reference key="destination" ref="263857086"/>
 					</object>
 					<int key="connectionID">1182</int>
 				</object>
@@ -2915,7 +2915,7 @@ wGw</bytes>
 							<reference ref="425164168"/>
 							<reference ref="1010469920"/>
 							<reference ref="995342550"/>
-							<reference ref="122021251"/>
+							<reference ref="263857086"/>
 						</array>
 						<reference key="parent" ref="379814623"/>
 					</object>
@@ -4656,7 +4656,7 @@ wGw</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">1180</int>
-						<reference key="object" ref="122021251"/>
+						<reference key="object" ref="263857086"/>
 						<reference key="parent" ref="720053764"/>
 					</object>
 				</array>
@@ -4933,7 +4933,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1182</int>
+			<int key="maxID">1184</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4972,7 +4972,6 @@ wGw</bytes>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="mainWindow">NSWindow</string>
 						<string key="messageEditorWindow">NSWindow</string>
-						<string key="sendButton">NSButton</string>
 						<string key="viewer">WebView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -4983,10 +4982,6 @@ wGw</bytes>
 						<object class="IBToOneOutletInfo" key="messageEditorWindow">
 							<string key="name">messageEditorWindow</string>
 							<string key="candidateClassName">NSWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="sendButton">
-							<string key="name">sendButton</string>
-							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="viewer">
 							<string key="name">viewer</string>
