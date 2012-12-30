@@ -7,17 +7,29 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
-@class ThingsApplication;
+@class ThingsApplication, ThingsProject;
 @class WebView;
 @interface DJAppDelegate : NSObject <NSApplicationDelegate>
 
-@property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSWindow *mainWindow;
 @property (assign) IBOutlet WebView *viewer;
+@property (unsafe_unretained) IBOutlet NSWindow *messageEditorWindow;
+@property (weak) IBOutlet NSButton *sendButton;
+
+
 @property (strong) ThingsApplication *things;
 @property (strong) NSString *pointsDisplay;
 @property (strong) NSMutableAttributedString *report;
 @property (assign) NSInteger totalPoints;
+
+@property (strong) ThingsProject *latestCompletedAccountabilityReportBuilder;
+@property (strong) NSDate *lastCloseDate;
+
+@property (assign) BOOL hasAffirmed;
 - (IBAction)closeBooks:(id)sender;
 - (IBAction)refreshReport:(id)sender;
+- (IBAction)increaseDays:(id)sender;
+- (IBAction)sendReport:(id)sender;
+
+
 @end

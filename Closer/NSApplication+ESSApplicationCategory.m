@@ -9,6 +9,8 @@
 
 @implementation NSApplication (ESSApplicationCategory)
 
+// TODO: COnvert this to ARC, move this to the sheetsandblocks category
+
 void ESSBeginAlertSheet(NSString *title,
 						NSString *defaultButton,
 						NSString *alternateButton,

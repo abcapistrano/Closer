@@ -13,9 +13,21 @@
 #import <WebKit/WebKit.h>
 #import "Things.h"
 #import "NSApplication+ESSApplicationCategory.h"
-#import "NSImage+PNG.h"
+#import "NSApplication+SheetsAndBlocks.h"
+
 NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
 NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
+NSString * const RULE_NUMBER_KEY = @"ruleNumber";
+NSString * const RULE_TITLE_KEY = @"ruleTitle";
+NSString * const RULE_TODOS_KEY = @"ruleToDos";
+NSString * const TODO_COMPLETED_FLAG = @"✓";
+NSString * const TODO_CANCELLED_FLAG = @"╳";
+
+// Below are the keys used by the shared defaults controller which are used to store report information
+
+NSString * const DAYS_LEFT_KEY= @"daysLeft";
+NSString * const MESSAGE_BODY_KEY = @"messageBody";
+NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penalties of death that this report is the truth, the whole truth, and nothing but the truth.";
 
 @implementation DJAppDelegate
 
@@ -23,7 +35,8 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 + (void) initialize {
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-                                       LAST_CLOSE_DATE_KEY :  [NSDate dateWithNaturalLanguageString:@"December 20, 2012 12 am"], POINTS_CARRYOVER_KEY : [NSNumber numberWithInteger:0]}];
+                                       LAST_CLOSE_DATE_KEY :  [NSDate dateWithNaturalLanguageString:@"December 20, 2012 12 am"],
+                                      POINTS_CARRYOVER_KEY : @0}];
     
     
 }
@@ -31,87 +44,271 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     self.things = [SBApplication applicationWithBundleIdentifier:@"com.culturedcode.Things"];
+
+
     [self refreshReport:self];
     // Insert code here to initialize your application
 }
 
-- (IBAction)closeBooks:(id)sender {
+- (void) showMissingARBWarning {
+
+    if (self.latestCompletedAccountabilityReportBuilder == nil) {
+
+
+        ESSBeginAlertSheet(@"Accountability Report Builder incomplete", @"Dismiss", nil, nil, self.mainWindow, nil, nil, nil, @"Complete the accountability report builder project before proceeding.");
+
+        return;
+
+
+    }
+
     
+}
+
+- (void) showIrreversibleActionWarningWithCompletionHandler:(void (^)(void))action{
+
     ESSBeginAlertSheet(
-                       @"Warning",
+                       @"Irreversible Action Warning",
                        @"Proceed",
                        @"Cancel",
                        nil,
-                       self.window,
-                       ^(void *context, NSInteger returnCode){
-                           
-                           
-                           if (returnCode == NSOKButton) {
-                                                              
-                               [self refreshReport:sender];
-                               
-                               Class toDoClass = [self.things classForScriptingClass:@"to do"];
-                               ThingsToDo *balanceCheck = [toDoClass new];
-                               ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
-                               SBElementArray *toDos = logbook.toDos;
-                               [toDos addObject:balanceCheck];
-                               
-                               balanceCheck.name = [NSString stringWithFormat:@"Balance Check: %ld points", self.totalPoints];
-                               
-                               // make a todo with the balance; tag it
-                               
-                               NSDate *newClosingDate = [NSDate date];
-                               balanceCheck.completionDate = newClosingDate;
-                               balanceCheck.tagNames = @"Balance Check";
-                               
-                               // set the prefs to the date of closing & carryover points
-                               
-                               [[NSUserDefaults standardUserDefaults] setObject:newClosingDate forKey:LAST_CLOSE_DATE_KEY];
-                               [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
-                               
-                               
-                               // generate a screenshot of the report
-                               
-                               NSImage *img = [[NSImage alloc] initWithData:[self.viewer dataWithPDFInsideRect:[self.viewer bounds]]];
-                              
-                               NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
-                               [email performWithItems:@[img]];
-                               
-                               
-                               
-                               
-                               /*
-                               NSString *path = [@"~/Desktop/points.png" stringByExpandingTildeInPath];
-                               [img saveAsPNGToURL:[NSURL fileURLWithPath:path]];
-                                */
-                               
-                               
-                               [self refreshReport:sender];
+                       self.mainWindow,
+                       nil,
 
+                       ^(void *context, NSInteger returnCode){
+                           //invoke action when the user preses "Proceed"
+
+                           if (returnCode == NSOKButton) {
                                
-                               
+                               action();
                                
                                
                            }
-                               
-                               
-
-                               
-                           
-                                                    
-                           
                        },
-                       NULL,
-                       NULL,
-                       @"Please check the Things Inbox for completed tasks which remain unlogged.");
- 
-    
-    
-    
+ nil,
+                       @"Please check the Things.app for completed todos which remain unlogged before proceeding.");
 
     
-    
+
+
+
 }
+
+// ARB stands for the "Accountability Report Builder" project
+// returns YES if processing was successful
+- (BOOL) processARB {
+
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^Rule (\\d{1,}) - (.+)$"
+                                                                      options:NSRegularExpressionAnchorsMatchLines error:nil];
+    NSString *note =self.latestCompletedAccountabilityReportBuilder.notes;
+    NSMutableArray *rulesDisplayed = [@[] mutableCopy];
+    [regex enumerateMatchesInString:note options:0 range:NSMakeRange(0, note.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+
+        NSMutableDictionary * ruleInfo = [@{} mutableCopy];
+
+        NSString *ruleNumber = [note substringWithRange:[result rangeAtIndex:1]];
+        ruleInfo[RULE_NUMBER_KEY] = @([ruleNumber integerValue]);
+        ruleInfo[RULE_TITLE_KEY] = [note substringWithRange:[result rangeAtIndex:2]];
+
+        [rulesDisplayed addObject:ruleInfo];
+
+    }];
+
+    regex = [[NSRegularExpression alloc] initWithPattern:@"^(\\d{1,}): (.+)$" options:NSRegularExpressionAnchorsMatchLines error:nil];
+
+    NSArray *projectToDos = [self.latestCompletedAccountabilityReportBuilder.toDos get];
+
+    // Go over each todo in the project so that we can stash them into the appropriate rule dictionary
+    [projectToDos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
+
+        NSString *longToDoName = toDo.name; //longToDoName includes the Rule Number
+
+        __block NSInteger ruleNumber;
+        __block NSString *shortToDoName;
+
+        [regex enumerateMatchesInString:longToDoName options:0 range:NSMakeRange(0,longToDoName.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+
+            ruleNumber = [[longToDoName substringWithRange:[result rangeAtIndex:1]] integerValue];
+            shortToDoName = [longToDoName substringWithRange:[result rangeAtIndex:2]];
+
+
+        }];
+
+
+        NSMutableDictionary *ruleInfo = [rulesDisplayed objectAtIndex:ruleNumber-1];
+        NSMutableArray * ruleToDos = ruleInfo[RULE_TODOS_KEY];
+        if (ruleToDos == nil) {
+
+            ruleToDos = [NSMutableArray array];
+            ruleInfo[RULE_TODOS_KEY] = ruleToDos;
+        }
+
+        //Re-create the ToDo
+
+        DJTodo *toDoDisplayed = [DJTodo new];
+        toDoDisplayed.name = shortToDoName;
+        toDoDisplayed.notes = toDo.notes;
+
+
+        if (toDo.status == ThingsStatusCompleted) {
+            toDoDisplayed.flag = TODO_COMPLETED_FLAG;
+        }
+
+
+        if (toDo.status == ThingsStatusCanceled) {
+
+            toDoDisplayed.flag = TODO_CANCELLED_FLAG;
+
+        }
+        [ruleToDos addObject:toDoDisplayed];
+
+
+
+
+
+    }];
+
+    NSError *error;
+    NSString *rulesDisplayedResult = [GRMustacheTemplate renderObject:@{ @"rulesDisplayed": rulesDisplayed}
+                                                         fromResource:@"Rules Format"
+                                                               bundle:[NSBundle mainBundle]
+                                                                error:&error];
+    if (!rulesDisplayedResult) {
+        //TODO: HANDLE ERROR GRACEFULLY
+        NSLog(@"error: %@", [error localizedDescription]);
+        return NO;
+    } else {
+
+        [[NSUserDefaults standardUserDefaults] setObject:rulesDisplayedResult forKey:MESSAGE_BODY_KEY];
+        return YES;
+
+    }
+
+
+
+
+}
+
+- (IBAction)closeBooks:(id)sender {
+
+    /* Procedure for closing books:
+     1. Ask the user what message to send.
+     2. Process the accountability report builder.
+     3. 
+     
+     
+     
+     */
+    
+    // Do not proceed if the project named "Accountability Report Builder" is not complete.
+    [self refreshReport:sender];
+    [self showMissingARBWarning];
+
+    [self showIrreversibleActionWarningWithCompletionHandler:^{
+
+        BOOL success = [self processARB];
+        if (success) {
+
+            [NSApp beginSheet:self.messageEditorWindow
+               modalForWindow:self.mainWindow
+                  didEndBlock:nil
+             ];
+
+
+
+        }
+
+
+        //parse the note of the project so we can get rule numbers and project names
+       
+        // TODO: ask for message
+        // TODO: ask for how many days left
+
+
+
+
+        // make a todo with the balance; tag it
+        /*
+         Class toDoClass = [self.things classForScriptingClass:@"to do"];
+         ThingsToDo *balanceCheck = [toDoClass new];
+         ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
+         SBElementArray *toDos = logbook.toDos;
+         [toDos addObject:balanceCheck];
+
+         balanceCheck.name = [NSString stringWithFormat:@"Balance Check: %ld points", self.totalPoints];
+
+
+
+
+
+
+         NSDate *newClosingDate = [NSDate date];
+         balanceCheck.completionDate = newClosingDate;
+         balanceCheck.tagNames = @"Balance Check";
+
+         // set the prefs to the date of closing & carryover points
+
+         [[NSUserDefaults standardUserDefaults] setObject:newClosingDate forKey:LAST_CLOSE_DATE_KEY];
+         [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
+         */
+
+        // generate a screenshot of the points report
+/*
+        NSImage *img = [[NSImage alloc] initWithData:[self.viewer dataWithPDFInsideRect:[self.viewer bounds]]];
+
+
+
+        NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
+        [email performWithItems:@[rulesDisplayedResult, img]];
+
+        // TODO: Make sure to save the last information inserted.
+
+        [self refreshReport:sender];*/
+    
+    
+    }];
+};
+
+
+- (IBAction)increaseDays:(id)sender {
+}
+
+- (IBAction)sendReport:(id)sender {
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    // generate a screenshot of the points report
+    
+     NSImage *img = [[NSImage alloc] initWithData:[self.viewer dataWithPDFInsideRect:[self.viewer bounds]]];
+
+
+
+     NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
+
+    NSString *messageBody = [userDefaults objectForKey:MESSAGE_BODY_KEY];
+
+
+    NSString *daysLeftMessage;
+    NSInteger daysLeft = [userDefaults integerForKey:DAYS_LEFT_KEY];
+    if (daysLeft == 1) {
+
+        daysLeftMessage = @"1 day left.";
+        
+    } else {
+
+        daysLeftMessage = [NSString stringWithFormat:@"%ld days left.", daysLeft];
+
+    }
+
+
+
+    [email performWithItems:@[messageBody, img, daysLeftMessage, STANDARD_OATH]];
+
+     // TODO: Make sure to save the last information inserted.
+
+
+}
+
 
 - (void)refreshReport:(id)sender {
     
@@ -120,13 +317,19 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     SBElementArray *toDos = logbook.toDos;
     
     
-    NSDate *lastCloseDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@", lastCloseDate];
     
+    
+    NSDate *lastCloseDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
+    self.lastCloseDate = lastCloseDate;
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@", lastCloseDate];
     [toDos filterUsingPredicate:pred];
+    
+    
+    
     NSArray *filteredTodos = [toDos get];
 
-    
+    // Iterate over the todos
     
     NSRegularExpression *exp = [[NSRegularExpression alloc] initWithPattern:@"[-+]?\\d+$" options:0
                                                                       error:NULL];
@@ -136,6 +339,8 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     __block NSInteger totalPoints = carryOver;
     
     NSMutableArray *toDosDisplayed = [NSMutableArray array];
+    
+    __block BOOL foundTheLatestAccountabilityReportBuilder = NO;
       
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
         
@@ -159,6 +364,24 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
             totalPoints = totalPoints + points;
             
         }
+        
+        // Find the latest copy of the "Accountability Report Builder" project in the logbook
+        // What are we looking for:
+        // It is a project
+        // It has a name "Accountability Report Builder"
+        // It is the latest
+        
+        
+        
+        if (!foundTheLatestAccountabilityReportBuilder &&
+            [toDoName isEqualToString:@"Accountability Report Builder"] &&
+            [[toDo className] isEqualToString:@"ThingsProject"] ) {
+            
+            self.latestCompletedAccountabilityReportBuilder = (ThingsProject *)toDo;
+            
+            foundTheLatestAccountabilityReportBuilder = YES;
+        }
+        
      
      
         
@@ -192,7 +415,7 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     };
     
     NSError *error;
-    NSString *result = [GRMustacheTemplate renderObject:data fromResource:@"Format" bundle:[NSBundle mainBundle] error:&error];
+    NSString *result = [GRMustacheTemplate renderObject:data fromResource:@"Points Format" bundle:[NSBundle mainBundle] error:&error];
     if (!result) {
         
         
@@ -210,4 +433,6 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
     
 }
 
+
 @end
+

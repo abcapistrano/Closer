@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD45979A168F409900D820DC /* Rules Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FD459799168F409900D820DC /* Rules Format.mustache */; };
+		FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */; };
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
 		FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
-		FD7C77E616835D130004030C /* NSImage+PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E516835D130004030C /* NSImage+PNG.m */; };
 		FD7C77E8168386FC0004030C /* Icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FD7C77E7168386FC0004030C /* Icon.iconset */; };
-		FDE60EC31680B7C800AE8703 /* Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FDE60EC21680B7C800AE8703 /* Format.mustache */; };
+		FDE60EC31680B7C800AE8703 /* Points Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FDE60EC21680B7C800AE8703 /* Points Format.mustache */; };
 		FDE60EC61680BB3200AE8703 /* DJTodo.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE60EC51680BB3200AE8703 /* DJTodo.m */; };
 		FDE60EC71680C0C500AE8703 /* GRMustache.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE60E8E1680B2B500AE8703 /* GRMustache.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		FDE60EC81680C0C500AE8703 /* GRMustacheAccumulatorTag.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE60E901680B2B500AE8703 /* GRMustacheAccumulatorTag.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
@@ -44,12 +45,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FD459799168F409900D820DC /* Rules Format.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rules Format.mustache"; sourceTree = "<group>"; };
+		FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+SheetsAndBlocks.h"; path = "../NSApplication+SheetsAndBlocks.h"; sourceTree = "<group>"; };
+		FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+SheetsAndBlocks.m"; path = "../NSApplication+SheetsAndBlocks.m"; sourceTree = "<group>"; };
 		FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		FD601EC0167F759E008DDBF0 /* Things.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Things.h; sourceTree = "<group>"; };
 		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
 		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
-		FD7C77E416835D130004030C /* NSImage+PNG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+PNG.h"; sourceTree = "<group>"; };
-		FD7C77E516835D130004030C /* NSImage+PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+PNG.m"; sourceTree = "<group>"; };
 		FD7C77E7168386FC0004030C /* Icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Icon.iconset; sourceTree = "<group>"; };
 		FDE60E8C1680B2B500AE8703 /* GRMustache_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRMustache_private.h; sourceTree = "<group>"; };
 		FDE60E8D1680B2B500AE8703 /* GRMustache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRMustache.h; sourceTree = "<group>"; };
@@ -105,7 +107,7 @@
 		FDE60EBF1680B2B500AE8703 /* GRMustacheVariableTag_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRMustacheVariableTag_private.h; sourceTree = "<group>"; };
 		FDE60EC01680B2B500AE8703 /* GRMustacheVariableTag.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GRMustacheVariableTag.m; sourceTree = "<group>"; };
 		FDE60EC11680B2B500AE8703 /* GRMustacheVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRMustacheVersion.h; sourceTree = "<group>"; };
-		FDE60EC21680B7C800AE8703 /* Format.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Format.mustache; sourceTree = "<group>"; };
+		FDE60EC21680B7C800AE8703 /* Points Format.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Points Format.mustache"; sourceTree = "<group>"; };
 		FDE60EC41680BB3200AE8703 /* DJTodo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJTodo.h; sourceTree = "<group>"; };
 		FDE60EC51680BB3200AE8703 /* DJTodo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJTodo.m; sourceTree = "<group>"; };
 		FDE60EDC1680C96900AE8703 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -240,12 +242,12 @@
 		FDED2AE81678C90E00BC416C /* Closer */ = {
 			isa = PBXGroup;
 			children = (
+				FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */,
+				FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */,
 				FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */,
 				FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */,
 				FDED2AF41678C90E00BC416C /* DJAppDelegate.h */,
 				FDED2AF51678C90E00BC416C /* DJAppDelegate.m */,
-				FD7C77E416835D130004030C /* NSImage+PNG.h */,
-				FD7C77E516835D130004030C /* NSImage+PNG.m */,
 				FDE60E8B1680B2A800AE8703 /* GRMustache */,
 				FDED2AF71678C90F00BC416C /* MainMenu.xib */,
 				FD601EC0167F759E008DDBF0 /* Things.h */,
@@ -260,7 +262,8 @@
 			isa = PBXGroup;
 			children = (
 				FD7C77E7168386FC0004030C /* Icon.iconset */,
-				FDE60EC21680B7C800AE8703 /* Format.mustache */,
+				FD459799168F409900D820DC /* Rules Format.mustache */,
+				FDE60EC21680B7C800AE8703 /* Points Format.mustache */,
 				FDED2AEA1678C90E00BC416C /* Closer-Info.plist */,
 				FDED2AEB1678C90E00BC416C /* InfoPlist.strings */,
 				FDED2AEE1678C90E00BC416C /* main.m */,
@@ -326,8 +329,9 @@
 				FDED2AED1678C90E00BC416C /* InfoPlist.strings in Resources */,
 				FDED2AF31678C90E00BC416C /* Credits.rtf in Resources */,
 				FDED2AF91678C90F00BC416C /* MainMenu.xib in Resources */,
-				FDE60EC31680B7C800AE8703 /* Format.mustache in Resources */,
+				FDE60EC31680B7C800AE8703 /* Points Format.mustache in Resources */,
 				FD7C77E8168386FC0004030C /* Icon.iconset in Resources */,
+				FD45979A168F409900D820DC /* Rules Format.mustache in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +349,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "open $CONFIGURATION_BUILD_DIR";
+			shellScript = "KEYWORDS=\"TODO:|FIXME:|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -379,7 +383,7 @@
 				FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */,
 				FDED2AF61678C90E00BC416C /* DJAppDelegate.m in Sources */,
 				FDE60EC61680BB3200AE8703 /* DJTodo.m in Sources */,
-				FD7C77E616835D130004030C /* NSImage+PNG.m in Sources */,
+				FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

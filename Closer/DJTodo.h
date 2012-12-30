@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface DJTodo : NSObject
-@property (strong) NSString *name;
-@property (strong) NSString *projectName;
+@property (copy) NSString *name;
+@property (copy) NSString *projectName;
 @property (assign) NSInteger points;
+@property (copy) NSString *flag;
+@property (copy) NSString *notes;
 @end
