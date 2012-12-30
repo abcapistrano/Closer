@@ -49,6 +49,8 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
     [self refreshReport:self];
     // Insert code here to initialize your application
+
+
 }
 
 - (void) showMissingARBWarning {
@@ -229,7 +231,14 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
 - (void) screenshotPointsReport {
 
-    NSData *imgData = [self.viewer dataWithPDFInsideRect:[self.viewer bounds]];
+    WebFrameView *frameView = self.viewer.mainFrame.frameView;
+
+    [frameView setAllowsScrolling:NO];
+
+    NSView <WebDocumentView> *docView = frameView.documentView;
+
+    NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
+    [frameView setAllowsScrolling:YES];
     [[NSUserDefaults standardUserDefaults] setObject:imgData forKey:POINTS_SCREENSHOT_DATA_KEY];
 
 
@@ -267,6 +276,10 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
 
 - (IBAction)makeReport:(id)sender {
+
+    //TODO: DELETE WHEN DONE
+    [self screenshotPointsReport];
+
     // Do not proceed if the project named "Accountability Report Builder" is not complete.
     [self refreshReport:sender];
     [self showMissingARBWarning];
