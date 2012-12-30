@@ -27,6 +27,7 @@ NSString * const TODO_CANCELLED_FLAG = @"╳";
 
 NSString * const DAYS_LEFT_KEY= @"daysLeft";
 NSString * const MESSAGE_BODY_KEY = @"messageBody";
+NSString * const POINTS_SCREENSHOT_DATA_KEY = @"pointsScreenshotData";
 NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penalties of death that this report is the truth, the whole truth, and nothing but the truth.";
 
 @implementation DJAppDelegate
@@ -95,24 +96,31 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 }
 
 // ARB stands for the "Accountability Report Builder" project
-// returns YES if processing was successful
-- (BOOL) processARB {
+- (void) processARB {
 
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^Rule (\\d{1,}) - (.+)$"
                                                                       options:NSRegularExpressionAnchorsMatchLines error:nil];
     NSString *note =self.latestCompletedAccountabilityReportBuilder.notes;
-    NSMutableArray *rulesDisplayed = [@[] mutableCopy];
+    NSMutableDictionary *rulesDisplayed = [NSMutableDictionary dictionary];
+
+
     [regex enumerateMatchesInString:note options:0 range:NSMakeRange(0, note.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
 
-        NSMutableDictionary * ruleInfo = [@{} mutableCopy];
 
-        NSString *ruleNumber = [note substringWithRange:[result rangeAtIndex:1]];
-        ruleInfo[RULE_NUMBER_KEY] = @([ruleNumber integerValue]);
+        NSNumber *ruleNumber = @([[note substringWithRange:[result rangeAtIndex:1]] integerValue]);
+        
+        NSMutableDictionary *ruleInfo = [NSMutableDictionary dictionary];
         ruleInfo[RULE_TITLE_KEY] = [note substringWithRange:[result rangeAtIndex:2]];
 
-        [rulesDisplayed addObject:ruleInfo];
+        ruleInfo[RULE_NUMBER_KEY] = ruleNumber;
+        rulesDisplayed[ruleNumber] = ruleInfo;
 
+
+
+      ;
     }];
+
+
 
     regex = [[NSRegularExpression alloc] initWithPattern:@"^(\\d{1,}): (.+)$" options:NSRegularExpressionAnchorsMatchLines error:nil];
 
@@ -135,7 +143,8 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
         }];
 
 
-        NSMutableDictionary *ruleInfo = [rulesDisplayed objectAtIndex:ruleNumber-1];
+        NSMutableDictionary *ruleInfo = rulesDisplayed[@(ruleNumber)];
+
         NSMutableArray * ruleToDos = ruleInfo[RULE_TODOS_KEY];
         if (ruleToDos == nil) {
 
@@ -168,19 +177,26 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
     }];
 
+
+
     NSError *error;
-    NSString *rulesDisplayedResult = [GRMustacheTemplate renderObject:@{ @"rulesDisplayed": rulesDisplayed}
+
+    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:RULE_NUMBER_KEY ascending:NO];
+    NSArray *values = [[rulesDisplayed allValues] sortedArrayUsingDescriptors:@[sd]];
+
+    NSString *rulesDisplayedResult = [GRMustacheTemplate renderObject:@{ @"rulesDisplayed": values}
                                                          fromResource:@"Rules Format"
                                                                bundle:[NSBundle mainBundle]
                                                                 error:&error];
     if (!rulesDisplayedResult) {
-        //TODO: HANDLE ERROR GRACEFULLY
-        NSLog(@"error: %@", [error localizedDescription]);
-        return NO;
+
+        NSString *errorMessage = [NSString stringWithFormat:@"error in processing ARB:%@", [error localizedDescription]];
+        [[NSUserDefaults standardUserDefaults] setObject:errorMessage forKey:MESSAGE_BODY_KEY];
+
+
     } else {
 
         [[NSUserDefaults standardUserDefaults] setObject:rulesDisplayedResult forKey:MESSAGE_BODY_KEY];
-        return YES;
 
     }
 
@@ -189,123 +205,116 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
 }
 
-- (IBAction)closeBooks:(id)sender {
-
-    /* Procedure for closing books:
-     1. Ask the user what message to send.
-     2. Process the accountability report builder.
-     3. 
-     
-     
-     
-     */
+- (void) closeBooks {
+    // make a todo with the balance; tag it
     
-    // Do not proceed if the project named "Accountability Report Builder" is not complete.
-    [self refreshReport:sender];
-    [self showMissingARBWarning];
+     Class toDoClass = [self.things classForScriptingClass:@"to do"];
+     ThingsToDo *balanceCheck = [toDoClass new];
+     ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
+     SBElementArray *toDos = logbook.toDos;
+     [toDos addObject:balanceCheck];
 
-    [self showIrreversibleActionWarningWithCompletionHandler:^{
+     balanceCheck.name = [NSString stringWithFormat:@"Balance Check: %ld points", self.totalPoints];
 
-        BOOL success = [self processARB];
-        if (success) {
+     NSDate *newClosingDate = [NSDate date];
+     balanceCheck.completionDate = newClosingDate;
+     balanceCheck.tagNames = @"Balance Check";
 
-            [NSApp beginSheet:self.messageEditorWindow
-               modalForWindow:self.mainWindow
-                  didEndBlock:nil
-             ];
+     // set the prefs to the date of closing & carryover points
 
+     [[NSUserDefaults standardUserDefaults] setObject:newClosingDate forKey:LAST_CLOSE_DATE_KEY];
+     [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
 
-
-        }
-
-
-        //parse the note of the project so we can get rule numbers and project names
-       
-        // TODO: ask for message
-        // TODO: ask for how many days left
-
-
-
-
-        // make a todo with the balance; tag it
-        /*
-         Class toDoClass = [self.things classForScriptingClass:@"to do"];
-         ThingsToDo *balanceCheck = [toDoClass new];
-         ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
-         SBElementArray *toDos = logbook.toDos;
-         [toDos addObject:balanceCheck];
-
-         balanceCheck.name = [NSString stringWithFormat:@"Balance Check: %ld points", self.totalPoints];
-
-
-
-
-
-
-         NSDate *newClosingDate = [NSDate date];
-         balanceCheck.completionDate = newClosingDate;
-         balanceCheck.tagNames = @"Balance Check";
-
-         // set the prefs to the date of closing & carryover points
-
-         [[NSUserDefaults standardUserDefaults] setObject:newClosingDate forKey:LAST_CLOSE_DATE_KEY];
-         [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
-         */
-
-        // generate a screenshot of the points report
-/*
-        NSImage *img = [[NSImage alloc] initWithData:[self.viewer dataWithPDFInsideRect:[self.viewer bounds]]];
-
-
-
-        NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
-        [email performWithItems:@[rulesDisplayedResult, img]];
-
-        // TODO: Make sure to save the last information inserted.
-
-        [self refreshReport:sender];*/
-    
-    
-    }];
-};
-
-
-- (IBAction)increaseDays:(id)sender {
 }
 
-- (IBAction)sendReport:(id)sender {
+- (void) screenshotPointsReport {
+
+    NSData *imgData = [self.viewer dataWithPDFInsideRect:[self.viewer bounds]];
+    [[NSUserDefaults standardUserDefaults] setObject:imgData forKey:POINTS_SCREENSHOT_DATA_KEY];
+
+
+
+
+}
+
+
+
+- (IBAction)sendReport:(id) sender {
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-
-    // generate a screenshot of the points report
-    
-     NSImage *img = [[NSImage alloc] initWithData:[self.viewer dataWithPDFInsideRect:[self.viewer bounds]]];
-
-
-
-     NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
-
+    NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
     NSString *messageBody = [userDefaults objectForKey:MESSAGE_BODY_KEY];
-
-
     NSString *daysLeftMessage;
     NSInteger daysLeft = [userDefaults integerForKey:DAYS_LEFT_KEY];
     if (daysLeft == 1) {
 
         daysLeftMessage = @"1 day left.";
-        
+
     } else {
 
         daysLeftMessage = [NSString stringWithFormat:@"%ld days left.", daysLeft];
 
     }
 
+    NSData *imgData = [userDefaults objectForKey:POINTS_SCREENSHOT_DATA_KEY];
+    NSImage *img = [[NSImage alloc] initWithData:imgData];
 
 
     [email performWithItems:@[messageBody, img, daysLeftMessage, STANDARD_OATH]];
 
-     // TODO: Make sure to save the last information inserted.
+}
 
+
+
+- (IBAction)makeReport:(id)sender {
+    // Do not proceed if the project named "Accountability Report Builder" is not complete.
+    [self refreshReport:sender];
+    [self showMissingARBWarning];
+
+    [self showIrreversibleActionWarningWithCompletionHandler:^{
+
+
+        [self processARB];
+        [NSApp beginSheet:self.messageEditorWindow
+           modalForWindow:self.mainWindow
+              didEndBlock:^(NSInteger returnCode) {
+
+                  if (returnCode == NSOKButton) {
+                      [self closeBooks];
+                      [self screenshotPointsReport];
+                      [self sendReport:self];
+                      [self refreshReport:self];
+
+
+
+
+
+
+                  }
+                  
+                  
+              }
+         ];
+
+     
+    
+    
+    }];
+};
+
+
+- (IBAction)send:(id)sender {
+
+    [NSApp endSheet:self.messageEditorWindow returnCode:NSOKButton];
+    [self.messageEditorWindow orderOut:self];
+
+
+}
+
+- (IBAction)closeEditor:(id)sender {
+
+    [NSApp endSheet:self.messageEditorWindow returnCode:NSCancelButton];
+    [self.messageEditorWindow orderOut:self];
 
 }
 
@@ -390,7 +399,7 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
      
      
     }];
-    
+
     
     NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"points" ascending:NO];
     [toDosDisplayed sortUsingDescriptors:@[sd]];

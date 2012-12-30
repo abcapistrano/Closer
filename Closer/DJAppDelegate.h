@@ -26,10 +26,10 @@
 @property (strong) NSDate *lastCloseDate;
 
 @property (assign) BOOL hasAffirmed;
-- (IBAction)closeBooks:(id)sender;
+- (IBAction)makeReport:(id)sender;
 - (IBAction)refreshReport:(id)sender;
-- (IBAction)increaseDays:(id)sender;
+- (IBAction)send:(id)sender;
+- (IBAction)closeEditor:(id)sender;
 - (IBAction)sendReport:(id)sender;
-
 
 @end
