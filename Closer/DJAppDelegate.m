@@ -272,8 +272,6 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
 - (IBAction)makeReport:(id)sender {
 
-    //TODO: DELETE WHEN DONE
-    [self screenshotPointsReport];
 
     // Do not proceed if the project named "Accountability Report Builder" is not complete.
     [self refreshReport:sender];
