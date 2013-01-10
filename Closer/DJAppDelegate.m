@@ -25,7 +25,7 @@ NSString * const TODO_CANCELLED_FLAG = @"╳";
 
 // Below are the keys used by the shared defaults controller which are used to store report information
 
-NSString * const DAYS_LEFT_KEY= @"daysLeft";
+NSString * const DAY_COUNT_KEY= @"dayCount";
 NSString * const MESSAGE_BODY_KEY = @"messageBody";
 NSString * const POINTS_SCREENSHOT_DATA_KEY = @"pointsScreenshotData";
 NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penalties of death that this report is the truth, the whole truth, and nothing but the truth.";
@@ -253,23 +253,18 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
     NSString *messageBody = [userDefaults objectForKey:MESSAGE_BODY_KEY];
-    NSString *daysLeftMessage;
-    NSInteger daysLeft = [userDefaults integerForKey:DAYS_LEFT_KEY];
-    if (daysLeft == 1) {
 
-        daysLeftMessage = @"1 day left.";
+    
+    NSInteger days = [userDefaults integerForKey:DAY_COUNT_KEY];
+    NSString *dayCount = [NSString stringWithFormat:@"Day %ld.\n", days];
 
-    } else {
-
-        daysLeftMessage = [NSString stringWithFormat:@"%ld days left.", daysLeft];
-
-    }
+    
 
     NSData *imgData = [userDefaults objectForKey:POINTS_SCREENSHOT_DATA_KEY];
     NSImage *img = [[NSImage alloc] initWithData:imgData];
 
 
-    [email performWithItems:@[messageBody, img, daysLeftMessage, STANDARD_OATH]];
+    [email performWithItems:@[messageBody, img, dayCount, STANDARD_OATH]];
 
 }
 
