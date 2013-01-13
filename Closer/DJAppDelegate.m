@@ -238,8 +238,18 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
     NSView <WebDocumentView> *docView = frameView.documentView;
 
     NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
+
+
+    NSDateFormatter *df = [NSDateFormatter new];
+    df.dateFormat = @"yyyy-MM-dd HHmm";
+
+    NSString *name = [[df stringFromDate:[NSDate date]] stringByAppendingPathExtension:@"pdf"];
+    NSURL *url = [NSURL fileURLWithPathComponents:@[@"/Users/earltagra/Dropbox/Goal Card/Points Log", name]];
+
+    [imgData writeToURL:url atomically:NO];
+
     [frameView setAllowsScrolling:YES];
-    [[NSUserDefaults standardUserDefaults] setObject:imgData forKey:POINTS_SCREENSHOT_DATA_KEY];
+//    [[NSUserDefaults standardUserDefaults] setObject:imgData forKey:POINTS_SCREENSHOT_DATA_KEY];
 
 
 
@@ -254,17 +264,12 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
     NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
     NSString *messageBody = [userDefaults objectForKey:MESSAGE_BODY_KEY];
 
-    
+//TODO: USE THE DROPBOX API DIRECTLY TO UPLOAD THE FILE
     NSInteger days = [userDefaults integerForKey:DAY_COUNT_KEY];
     NSString *dayCount = [NSString stringWithFormat:@"Day %ld.\n", days];
+    NSString *pointsImgMsg = @"See points in detail: https://www.dropbox.com/sh/ek4f0fibrcoq920/dXz-kapTbp\n";
 
-    
-
-    NSData *imgData = [userDefaults objectForKey:POINTS_SCREENSHOT_DATA_KEY];
-    NSImage *img = [[NSImage alloc] initWithData:imgData];
-
-
-    [email performWithItems:@[messageBody, img, dayCount, STANDARD_OATH]];
+    [email performWithItems:@[messageBody, pointsImgMsg, dayCount, STANDARD_OATH]];
 
 }
 
@@ -283,7 +288,11 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
           didEndBlock:^(NSInteger returnCode) {
 
               if (returnCode == NSOKButton) {
+
+#ifdef RELEASE
                   [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
+#endif
+
                   [self screenshotPointsReport];
                   [self sendReport:self];
                   [self refreshReport:self];
