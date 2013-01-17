@@ -347,7 +347,9 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
     NSDate *lastCloseDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
     self.lastCloseDate = lastCloseDate;
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@", lastCloseDate];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@",  lastCloseDate];
+ //   NSPredicate *pred = [NSPredicate predicateWithFormat:@"status == %@ AND completionDate > %@", ThingsStatusCompleted, lastCloseDate];
+
     [toDos filterUsingPredicate:pred];
     
     
@@ -368,45 +370,53 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
     __block BOOL foundTheLatestAccountabilityReportBuilder = NO;
       
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
-        
-        NSString *toDoName = toDo.name;
-        
-        NSTextCheckingResult *result = [exp firstMatchInString:toDoName options:0 range:NSMakeRange(0, [toDoName length])];
-        
-        if (result) {
-            NSInteger points = [[toDoName substringWithRange:result.range] integerValue];
-          
-            DJTodo *aTodo = [DJTodo new];
-            NSRange nameRange = NSMakeRange(0, result.range.location-1);
-            aTodo.name =   [toDoName substringWithRange:nameRange];
-            aTodo.points = points;
-            aTodo.projectName = toDo.project.name;
-            
-            [toDosDisplayed addObject:aTodo];
-            
-            
-            
-            totalPoints = totalPoints + points;
+
+        if (toDo.status == ThingsStatusCompleted) {
+            NSString *toDoName = toDo.name;
+
+            NSTextCheckingResult *result = [exp firstMatchInString:toDoName options:0 range:NSMakeRange(0, [toDoName length])];
+
+            if (result) {
+                NSInteger points = [[toDoName substringWithRange:result.range] integerValue];
+
+                DJTodo *aTodo = [DJTodo new];
+                NSRange nameRange = NSMakeRange(0, result.range.location-1);
+                aTodo.name =   [toDoName substringWithRange:nameRange];
+                aTodo.points = points;
+                aTodo.projectName = toDo.project.name;
+
+
+
+
+                [toDosDisplayed addObject:aTodo];
+
+
+
+                totalPoints = totalPoints + points;
+
+            }
+
+            // Find the latest copy of the "Accountability Report Builder" project in the logbook
+            // What are we looking for:
+            // It is a project
+            // It has a name "Accountability Report Builder"
+            // It is the latest
+
+
+
+            if (!foundTheLatestAccountabilityReportBuilder &&
+                [toDoName isEqualToString:@"Accountability Report Builder"] &&
+                [[toDo className] isEqualToString:@"ThingsProject"] ) {
+
+                self.latestCompletedAccountabilityReportBuilder = (ThingsProject *)toDo;
+                
+                foundTheLatestAccountabilityReportBuilder = YES;
+            }
+
             
         }
         
-        // Find the latest copy of the "Accountability Report Builder" project in the logbook
-        // What are we looking for:
-        // It is a project
-        // It has a name "Accountability Report Builder"
-        // It is the latest
-        
-        
-        
-        if (!foundTheLatestAccountabilityReportBuilder &&
-            [toDoName isEqualToString:@"Accountability Report Builder"] &&
-            [[toDo className] isEqualToString:@"ThingsProject"] ) {
-            
-            self.latestCompletedAccountabilityReportBuilder = (ThingsProject *)toDo;
-            
-            foundTheLatestAccountabilityReportBuilder = YES;
-        }
-        
+    
      
      
         
