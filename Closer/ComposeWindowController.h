@@ -1,0 +1,13 @@
+//
+//  ComposeWindowController.h
+//  Closer
+//
+//  Created by Earl on 1/19/13.
+//  Copyright (c) 2013 Earl. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface ComposeWindowController : NSWindowController
+
+@end

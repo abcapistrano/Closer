@@ -7,28 +7,38 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class ThingsApplication, ThingsProject;
-@class WebView;
+@class OverviewWindowController;
 @interface DJAppDelegate : NSObject <NSApplicationDelegate>
+//TODO: UNCOMMENT THIS LINES!
 
+
+/*
 @property (assign) IBOutlet NSWindow *mainWindow;
-@property (assign) IBOutlet WebView *viewer;
 @property (unsafe_unretained) IBOutlet NSWindow *messageEditorWindow;
 
 
-@property (strong) ThingsApplication *things;
 @property (strong) NSString *pointsDisplay;
 @property (strong) NSMutableAttributedString *report;
-@property (assign) NSInteger totalPoints;
 
-@property (strong) ThingsProject *latestCompletedAccountabilityReportBuilder;
-@property (strong) NSDate *lastCloseDate;
+@property (assign) BOOL hasAffirmed;*/
 
-@property (assign) BOOL hasAffirmed;
+
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+
+@property OverviewWindowController *overview;
+
+- (IBAction)saveAction:(id)sender;
+
+
+
+/*
 - (IBAction)makeReport:(id)sender;
 - (IBAction)refreshReport:(id)sender;
 - (IBAction)send:(id)sender;
 - (IBAction)closeEditor:(id)sender;
-- (IBAction)sendReport:(id)sender;
+- (IBAction)sendReport:(id)sender;*/
 
 @end
