@@ -11,18 +11,7 @@
 @class ThingsDataController;
 
 @interface DJAppDelegate : NSObject <NSApplicationDelegate>
-//TODO: UNCOMMENT THIS LINES!
 
-
-/*
-@property (assign) IBOutlet NSWindow *mainWindow;
-@property (unsafe_unretained) IBOutlet NSWindow *messageEditorWindow;
-
-
-@property (strong) NSString *pointsDisplay;
-@property (strong) NSMutableAttributedString *report;
-
-@property (assign) BOOL hasAffirmed;*/
 
 
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -33,14 +22,5 @@
 
 
 - (IBAction)saveAction:(id)sender;
-
-
-
-/*
-- (IBAction)makeReport:(id)sender;
-- (IBAction)refreshReport:(id)sender;
-- (IBAction)send:(id)sender;
-- (IBAction)closeEditor:(id)sender;
-- (IBAction)sendReport:(id)sender;*/
 
 @end

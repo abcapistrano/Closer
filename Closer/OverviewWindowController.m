@@ -14,7 +14,7 @@
 #import "ThingsDataController.h"
 #import "NSApplication+ESSApplicationCategory.h"
 NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
-
+NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of deduction must be set at 00:00 for that day
 
 @interface OverviewWindowController ()
 
@@ -55,18 +55,12 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 
 - (void)refreshReport:(id)sender {
 
-    /*
-     What to include in the report:
-     - routines which were not entered
-     - law school readings which not entered
-     - other entries which have matured and which were not entered
-     
-     
-     */
-
-
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Entry"];
-//    request.predicate = [NSPredicate predicateWithFormat:@"dateCollected "]
+
+    NSDate *startDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
+    NSDate *endDate = [NSDate date];
+
+    request.predicate = [NSPredicate predicateWithFormat:@"maturityDate > %@ AND maturityDate < %@", startDate, endDate ];
 
     NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"points" ascending:NO];
     request.sortDescriptors = @[sd];
@@ -83,13 +77,19 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 
 
     NSInteger carryOver = [[NSUserDefaults standardUserDefaults] integerForKey:POINTS_CARRYOVER_KEY];
-    NSInteger totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver;
+    NSInteger daysDifference = ceil([endDate timeIntervalSinceDate:startDate]/86400);
+    NSInteger deduction = daysDifference * 10;
+
+
+
+    self.totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver - deduction;
 
 
     NSDictionary *data = @{
     @"pointsCarryover" : @(carryOver),
+    @"pointsDeduction" : @(deduction),
     @"date": [df stringFromDate:[NSDate date]],
-    @"totalPoints" : @(totalPoints),
+    @"totalPoints" : @(self.totalPoints),
     @"entries": entries,
 
     };
@@ -117,9 +117,9 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 
             if (returnCode == NSOKButton) {
 
-#ifdef RELEASE
+//#ifdef RELEASE
                 [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
-#endif
+//#endif
 
                 [self screenshotPointsReport];
 
@@ -192,9 +192,13 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 
     // set the prefs to the date of closing & carryover points
 
- //   [[NSUserDefaults standardUserDefaults] setObject:newClosingDate forKey:LAST_CLOSE_DATE_KEY];
- //   [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
-//TODO: Save new objects from core data..
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LAST_CLOSE_DATE_KEY];
+    [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
+
+    [[NSApp delegate] saveAction:self];
+
+
+
 }
 
 

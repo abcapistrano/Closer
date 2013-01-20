@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD1D0C8A16ABDE75006B4254 /* MTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1D0C8916ABDE75006B4254 /* MTRandom.m */; };
+		FD1D0C8D16ABE33E006B4254 /* NSString+GenericString.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1D0C8C16ABE33E006B4254 /* NSString+GenericString.m */; };
 		FD45979A168F409900D820DC /* Rules Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FD459799168F409900D820DC /* Rules Format.mustache */; };
 		FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */; };
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
@@ -50,6 +52,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FD1D0C8816ABDE75006B4254 /* MTRandom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTRandom.h; sourceTree = "<group>"; };
+		FD1D0C8916ABDE75006B4254 /* MTRandom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTRandom.m; sourceTree = "<group>"; };
+		FD1D0C8B16ABE33E006B4254 /* NSString+GenericString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+GenericString.h"; sourceTree = "<group>"; };
+		FD1D0C8C16ABE33E006B4254 /* NSString+GenericString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+GenericString.m"; sourceTree = "<group>"; };
 		FD459799168F409900D820DC /* Rules Format.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rules Format.mustache"; sourceTree = "<group>"; };
 		FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+SheetsAndBlocks.h"; path = "../NSApplication+SheetsAndBlocks.h"; sourceTree = "<group>"; };
 		FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+SheetsAndBlocks.m"; path = "../NSApplication+SheetsAndBlocks.m"; sourceTree = "<group>"; };
@@ -277,6 +283,10 @@
 				FD95076816AADCAA00092963 /* OverviewWindowController.h */,
 				FD95076916AADCAA00092963 /* OverviewWindowController.m */,
 				FD95076A16AADCAA00092963 /* OverviewWindowController.xib */,
+				FD1D0C8816ABDE75006B4254 /* MTRandom.h */,
+				FD1D0C8916ABDE75006B4254 /* MTRandom.m */,
+				FD1D0C8B16ABE33E006B4254 /* NSString+GenericString.h */,
+				FD1D0C8C16ABE33E006B4254 /* NSString+GenericString.m */,
 				FD72D76216AAF09E00F57B12 /* Models */,
 				FDE60E8B1680B2A800AE8703 /* GRMustache */,
 				FDED2AF71678C90F00BC416C /* MainMenu.xib */,
@@ -418,6 +428,8 @@
 				FD95076B16AADCAA00092963 /* OverviewWindowController.m in Sources */,
 				FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */,
 				FD72D77716ABCDE200F57B12 /* DJEntry.m in Sources */,
+				FD1D0C8A16ABDE75006B4254 /* MTRandom.m in Sources */,
+				FD1D0C8D16ABE33E006B4254 /* NSString+GenericString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

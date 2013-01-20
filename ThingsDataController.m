@@ -12,9 +12,9 @@
 #import "DJEntry.h"
 #import "DJAppDelegate.h"
 #include "Constants.h"
-
+#import "MTRandom.h"
+#import "NSString+GenericString.h"
 NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
-
 @implementation ThingsDataController
 
 
@@ -96,11 +96,8 @@ Goes over each todo/project in the logbook which has points so that the correspo
                                                                       error:NULL];
 
 
-    ThingsArea *lawReadingsArea = [self.things.areas objectWithName:@"Law Readings"];
-    ThingsTag *routineTag = [self.things.tags objectWithName:@"routine"];
-
-
-
+    MTRandom *randomizer = [[MTRandom alloc] init];
+    
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
 
         if (toDo.status == ThingsStatusCompleted) {
@@ -109,7 +106,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
             NSTextCheckingResult *result = [exp firstMatchInString:toDoName options:0 range:NSMakeRange(0, [toDoName length])];
 
             if (result) {
-                NSInteger points = [[toDoName substringWithRange:result.range] integerValue];
+                NSInteger rawPoints = [[toDoName substringWithRange:result.range] integerValue];
 
 
                 DJEntry *entry = [DJEntry entryWithDefaultContext];
@@ -117,30 +114,43 @@ Goes over each todo/project in the logbook which has points so that the correspo
                 NSRange nameRange = NSMakeRange(0, result.range.location-1);
 
                 entry.name = [toDoName substringWithRange:nameRange];
-                entry.points = @(points);
+                entry.points = @(rawPoints);
                 entry.projectName = toDo.project.name;
                 entry.dateCollected = [NSDate date];
 
                 // if the entry is a routine or law school reading...it matures immediately
 
-                if ([toDo.tags containsObject:routineTag] || [toDo.area isEqual:lawReadingsArea]) {
+                if ([toDo.tagNames containsSubstring:@"routine"]) {
 
                     entry.maturityDate = [NSDate date];
+                    entry.points = @(rawPoints);
 
-                } else {
+                } else if ([toDo.area.name isEqualToString:@"Law Readings"]) {
 
+                    //2x points for law readings
+
+
+                    entry.maturityDate = [NSDate date];
+                    entry.points =  @(2 * rawPoints);
+                }
+
+
+                else {
+
+
+                // shuffle the maturity dates for other entries between 30 days from 90 days of the current date
+
+                    NSDateComponents *dc = [[NSDateComponents alloc] init];
+
+                    //get a random number from 
+                    NSInteger randomDay = [randomizer randomUInt32From:30 to:90];
+                    [dc setDay:randomDay];
+                    NSDate *maturityDate = [[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:[NSDate date] options:0];
+                    entry.maturityDate = maturityDate;
 
                     
 
                 }
-                
-
-
-
-
-                //TODO: IMPLEMENT MATURITY DATES
-                //entry.maturityDate
-
                 
 
 
