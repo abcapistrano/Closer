@@ -53,20 +53,20 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
 }
 
-- (void) showMissingARBWarning {
-
-    if (self.latestCompletedAccountabilityReportBuilder == nil) {
-
-
-        ESSBeginAlertSheet(@"Accountability Report Builder incomplete", @"Dismiss", nil, nil, self.mainWindow, nil, nil, nil, @"Complete the accountability report builder project before proceeding.");
-
-        return;
-
-
-    }
-
-    
-}
+//- (void) showMissingARBWarning {
+//
+//    if (self.latestCompletedAccountabilityReportBuilder == nil) {
+//
+//
+//        ESSBeginAlertSheet(@"Accountability Report Builder incomplete", @"Dismiss", nil, nil, self.mainWindow, nil, nil, nil, @"Complete the accountability report builder project before proceeding.");
+//
+//        return;
+//
+//
+//    }
+//
+//    
+//}
 
 - (void) showIrreversibleActionWarningWithCompletionHandler:(void (^)(void))action{
 
@@ -98,114 +98,114 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 }
 
 // ARB stands for the "Accountability Report Builder" project
-- (void) processARB {
-
-    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^Rule (\\d{1,}) - (.+)$"
-                                                                      options:NSRegularExpressionAnchorsMatchLines error:nil];
-    NSString *note =self.latestCompletedAccountabilityReportBuilder.notes;
-    NSMutableDictionary *rulesDisplayed = [NSMutableDictionary dictionary];
-
-
-    [regex enumerateMatchesInString:note options:0 range:NSMakeRange(0, note.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-
-
-        NSNumber *ruleNumber = @([[note substringWithRange:[result rangeAtIndex:1]] integerValue]);
-        
-        NSMutableDictionary *ruleInfo = [NSMutableDictionary dictionary];
-        ruleInfo[RULE_TITLE_KEY] = [note substringWithRange:[result rangeAtIndex:2]];
-
-        ruleInfo[RULE_NUMBER_KEY] = ruleNumber;
-        rulesDisplayed[ruleNumber] = ruleInfo;
-
-
-
-      ;
-    }];
-
-
-
-    regex = [[NSRegularExpression alloc] initWithPattern:@"^(\\d{1,}): (.+)$" options:NSRegularExpressionAnchorsMatchLines error:nil];
-
-    NSArray *projectToDos = [self.latestCompletedAccountabilityReportBuilder.toDos get];
-
-    // Go over each todo in the project so that we can stash them into the appropriate rule dictionary
-    [projectToDos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
-
-        NSString *longToDoName = toDo.name; //longToDoName includes the Rule Number
-
-        __block NSInteger ruleNumber;
-        __block NSString *shortToDoName;
-
-        [regex enumerateMatchesInString:longToDoName options:0 range:NSMakeRange(0,longToDoName.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-
-            ruleNumber = [[longToDoName substringWithRange:[result rangeAtIndex:1]] integerValue];
-            shortToDoName = [longToDoName substringWithRange:[result rangeAtIndex:2]];
-
-
-        }];
-
-
-        NSMutableDictionary *ruleInfo = rulesDisplayed[@(ruleNumber)];
-
-        NSMutableArray * ruleToDos = ruleInfo[RULE_TODOS_KEY];
-        if (ruleToDos == nil) {
-
-            ruleToDos = [NSMutableArray array];
-            ruleInfo[RULE_TODOS_KEY] = ruleToDos;
-        }
-
-        //Re-create the ToDo
-
-        DJTodo *toDoDisplayed = [DJTodo new];
-        toDoDisplayed.name = shortToDoName;
-        toDoDisplayed.notes = toDo.notes;
-
-
-        if (toDo.status == ThingsStatusCompleted) {
-            toDoDisplayed.flag = TODO_COMPLETED_FLAG;
-        }
-
-
-        if (toDo.status == ThingsStatusCanceled) {
-
-            toDoDisplayed.flag = TODO_CANCELLED_FLAG;
-
-        }
-        [ruleToDos addObject:toDoDisplayed];
-
-
-
-
-
-    }];
-
-
-
-    NSError *error;
-
-    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:RULE_NUMBER_KEY ascending:NO];
-    NSArray *values = [[rulesDisplayed allValues] sortedArrayUsingDescriptors:@[sd]];
-
-    NSString *rulesDisplayedResult = [GRMustacheTemplate renderObject:@{ @"rulesDisplayed": values}
-                                                         fromResource:@"Rules Format"
-                                                               bundle:[NSBundle mainBundle]
-                                                                error:&error];
-    if (!rulesDisplayedResult) {
-
-        NSString *errorMessage = [NSString stringWithFormat:@"error in processing ARB:%@", [error localizedDescription]];
-        [[NSUserDefaults standardUserDefaults] setObject:errorMessage forKey:MESSAGE_BODY_KEY];
-
-
-    } else {
-
-        [[NSUserDefaults standardUserDefaults] setObject:rulesDisplayedResult forKey:MESSAGE_BODY_KEY];
-
-    }
-
-
-
-
-}
+//- (void) processARB {
+//
+//    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^Rule (\\d{1,}) - (.+)$"
+//                                                                      options:NSRegularExpressionAnchorsMatchLines error:nil];
+//    NSString *note =self.latestCompletedAccountabilityReportBuilder.notes;
+//    NSMutableDictionary *rulesDisplayed = [NSMutableDictionary dictionary];
+//
+//
+//    [regex enumerateMatchesInString:note options:0 range:NSMakeRange(0, note.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+//
+//
+//        NSNumber *ruleNumber = @([[note substringWithRange:[result rangeAtIndex:1]] integerValue]);
+//        
+//        NSMutableDictionary *ruleInfo = [NSMutableDictionary dictionary];
+//        ruleInfo[RULE_TITLE_KEY] = [note substringWithRange:[result rangeAtIndex:2]];
+//
+//        ruleInfo[RULE_NUMBER_KEY] = ruleNumber;
+//        rulesDisplayed[ruleNumber] = ruleInfo;
+//
+//
+//
+//      ;
+//    }];
+//
+//
+//
+//    regex = [[NSRegularExpression alloc] initWithPattern:@"^(\\d{1,}): (.+)$" options:NSRegularExpressionAnchorsMatchLines error:nil];
+//
+//    NSArray *projectToDos = [self.latestCompletedAccountabilityReportBuilder.toDos get];
+//
+//    // Go over each todo in the project so that we can stash them into the appropriate rule dictionary
+//    [projectToDos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
+//
+//        NSString *longToDoName = toDo.name; //longToDoName includes the Rule Number
+//
+//        __block NSInteger ruleNumber;
+//        __block NSString *shortToDoName;
+//
+//        [regex enumerateMatchesInString:longToDoName options:0 range:NSMakeRange(0,longToDoName.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+//
+//            ruleNumber = [[longToDoName substringWithRange:[result rangeAtIndex:1]] integerValue];
+//            shortToDoName = [longToDoName substringWithRange:[result rangeAtIndex:2]];
+//
+//
+//        }];
+//
+//
+//        NSMutableDictionary *ruleInfo = rulesDisplayed[@(ruleNumber)];
+//
+//        NSMutableArray * ruleToDos = ruleInfo[RULE_TODOS_KEY];
+//        if (ruleToDos == nil) {
+//
+//            ruleToDos = [NSMutableArray array];
+//            ruleInfo[RULE_TODOS_KEY] = ruleToDos;
+//        }
+//
+//        //Re-create the ToDo
+//
+//        DJTodo *toDoDisplayed = [DJTodo new];
+//        toDoDisplayed.name = shortToDoName;
+//        toDoDisplayed.notes = toDo.notes;
+//
+//
+//        if (toDo.status == ThingsStatusCompleted) {
+//            toDoDisplayed.flag = TODO_COMPLETED_FLAG;
+//        }
+//
+//
+//        if (toDo.status == ThingsStatusCanceled) {
+//
+//            toDoDisplayed.flag = TODO_CANCELLED_FLAG;
+//
+//        }
+//        [ruleToDos addObject:toDoDisplayed];
+//
+//
+//
+//
+//
+//    }];
+//
+//
+//
+//    NSError *error;
+//
+//    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:RULE_NUMBER_KEY ascending:NO];
+//    NSArray *values = [[rulesDisplayed allValues] sortedArrayUsingDescriptors:@[sd]];
+//
+//    NSString *rulesDisplayedResult = [GRMustacheTemplate renderObject:@{ @"rulesDisplayed": values}
+//                                                         fromResource:@"Rules Format"
+//                                                               bundle:[NSBundle mainBundle]
+//                                                                error:&error];
+//    if (!rulesDisplayedResult) {
+//
+//        NSString *errorMessage = [NSString stringWithFormat:@"error in processing ARB:%@", [error localizedDescription]];
+//        [[NSUserDefaults standardUserDefaults] setObject:errorMessage forKey:MESSAGE_BODY_KEY];
+//
+//
+//    } else {
+//
+//        [[NSUserDefaults standardUserDefaults] setObject:rulesDisplayedResult forKey:MESSAGE_BODY_KEY];
+//
+//    }
+//
+//
+//
+//
+//}
 
 - (void) closeBooks {
     // make a todo with the balance; tag it
@@ -280,8 +280,8 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
     // Do not proceed if the project named "Accountability Report Builder" is not complete.
     [self refreshReport:sender];
-    [self showMissingARBWarning];
-    [self processARB];
+//    [self showMissingARBWarning];
+//    [self processARB];
 
     [NSApp beginSheet:self.messageEditorWindow
        modalForWindow:self.mainWindow
@@ -404,14 +404,14 @@ NSString * const STANDARD_OATH = @"I solemnly swear under the pains and penaltie
 
 
 
-            if (!foundTheLatestAccountabilityReportBuilder &&
-                [toDoName isEqualToString:@"Accountability Report Builder"] &&
-                [[toDo className] isEqualToString:@"ThingsProject"] ) {
-
-                self.latestCompletedAccountabilityReportBuilder = (ThingsProject *)toDo;
-                
-                foundTheLatestAccountabilityReportBuilder = YES;
-            }
+//            if (!foundTheLatestAccountabilityReportBuilder &&
+//                [toDoName isEqualToString:@"Accountability Report Builder"] &&
+//                [[toDo className] isEqualToString:@"ThingsProject"] ) {
+//
+//                self.latestCompletedAccountabilityReportBuilder = (ThingsProject *)toDo;
+//                
+//                foundTheLatestAccountabilityReportBuilder = YES;
+//            }
 
             
         }

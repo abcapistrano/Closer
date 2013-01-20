@@ -21,7 +21,7 @@
 @property (strong) NSMutableAttributedString *report;
 @property (assign) NSInteger totalPoints;
 
-@property (strong) ThingsProject *latestCompletedAccountabilityReportBuilder;
+//@property (strong) ThingsProject *latestCompletedAccountabilityReportBuilder;
 @property (strong) NSDate *lastCloseDate;
 
 @property (assign) BOOL hasAffirmed;
