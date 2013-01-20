@@ -125,18 +125,30 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     entry.points =  @(2 * rawPoints);
                 }
 
-                else {
+                else if (rawPoints < 0){
 
-                // shuffle the maturity dates for other entries between 30 days from 90 days of the current date
+                    // we're dealing with timewasters here
+
+                    entry.points = @(rawPoints);
+                    entry.maturityDate = toDo.completionDate;
+
+
+              
+                } else {
+
+
+                    // shuffle the maturity dates for other entries between 30 days from 90 days of the current date
+
 
                     NSDateComponents *dc = [[NSDateComponents alloc] init];
 
-                    //get a random number from 
+                    //get a random number from
                     NSInteger randomDay = [randomizer randomUInt32From:30 to:90];
                     [dc setDay:randomDay];
                     NSDate *maturityDate = [[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:toDo.completionDate options:0];
-
+                    
                     entry.maturityDate = maturityDate;
+                    
                 }
             }
 
