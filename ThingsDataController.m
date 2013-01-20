@@ -24,8 +24,6 @@ NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
     static id sharedInstance;
     dispatch_once(&once, ^{
         sharedInstance = [[self alloc] init];
-
-        
     });
 
 
@@ -72,22 +70,15 @@ Goes over each todo/project in the logbook which has points so that the correspo
 
 - (void) processLoggedToDos {
 
-
+    [[[NSApp delegate] managedObjectContext] rollback];
 
     ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
     SBElementArray *toDos = logbook.toDos;
 
-
-
-
-    
     NSDate *lastCloseDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@",  lastCloseDate];
 
     [toDos filterUsingPredicate:pred];
-
-
-
     NSArray *filteredTodos = [toDos get];
 
     // Iterate over the todos
@@ -134,9 +125,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     entry.points =  @(2 * rawPoints);
                 }
 
-
                 else {
-
 
                 // shuffle the maturity dates for other entries between 30 days from 90 days of the current date
 
@@ -146,27 +135,14 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     NSInteger randomDay = [randomizer randomUInt32From:30 to:90];
                     [dc setDay:randomDay];
                     NSDate *maturityDate = [[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:[NSDate date] options:0];
+
                     entry.maturityDate = maturityDate;
-
-                    
-
                 }
-                
-
-
             }
 
                        
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
+         
     }];
 
 

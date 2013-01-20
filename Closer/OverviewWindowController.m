@@ -45,7 +45,6 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 {
     [super windowDidLoad];
 
-    [[ThingsDataController sharedDataController] processData];
     [self refreshReport:self];
 
 
@@ -54,6 +53,9 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
 
 - (void)refreshReport:(id)sender {
+
+    [[ThingsDataController sharedDataController] processData];
+
 
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Entry"];
 
@@ -117,6 +119,8 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
             if (returnCode == NSOKButton) {
 
+                [self refreshReport:self];
+
 //#ifdef RELEASE
                 [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
 //#endif
@@ -124,9 +128,6 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
                 [self screenshotPointsReport];
 
                 NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
-
-
-
 
                 NSString *format = [NSString stringWithContentsOfURL:[
                                                                       [NSBundle mainBundle] URLForResource:@"PostFormat" withExtension:@"txt"]
