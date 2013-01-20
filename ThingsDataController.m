@@ -96,6 +96,11 @@ Goes over each todo/project in the logbook which has points so that the correspo
                                                                       error:NULL];
 
 
+    ThingsArea *lawReadingsArea = [self.things.areas objectWithName:@"Law Readings"];
+    ThingsTag *routineTag = [self.things.tags objectWithName:@"routine"];
+
+
+
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
 
         if (toDo.status == ThingsStatusCompleted) {
@@ -115,6 +120,24 @@ Goes over each todo/project in the logbook which has points so that the correspo
                 entry.points = @(points);
                 entry.projectName = toDo.project.name;
                 entry.dateCollected = [NSDate date];
+
+                // if the entry is a routine or law school reading...it matures immediately
+
+                if ([toDo.tags containsObject:routineTag] || [toDo.area isEqual:lawReadingsArea]) {
+
+                    entry.maturityDate = [NSDate date];
+
+                } else {
+
+
+                    
+
+                }
+                
+
+
+
+
                 //TODO: IMPLEMENT MATURITY DATES
                 //entry.maturityDate
 

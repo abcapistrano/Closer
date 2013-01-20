@@ -1298,7 +1298,7 @@
 			<object class="NSUserDefaultsController" id="498096180">
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
-			<object class="NSCustomObject" id="371878787">
+			<object class="NSCustomObject" id="96653000">
 				<string key="NSClassName">OverviewWindowController</string>
 			</object>
 		</array>
@@ -1980,7 +1980,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">overviewWindowController</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="371878787"/>
+						<reference key="destination" ref="96653000"/>
 					</object>
 					<int key="connectionID">1257</int>
 				</object>
@@ -2977,7 +2977,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">1256</int>
-						<reference key="object" ref="371878787"/>
+						<reference key="object" ref="96653000"/>
 						<reference key="parent" ref="0"/>
 					</object>
 				</array>

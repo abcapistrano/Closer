@@ -11,8 +11,8 @@
 		FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */; };
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
 		FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */; };
-		FD72D76116AAF08900F57B12 /* DJEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D76016AAF08900F57B12 /* DJEntry.m */; };
 		FD72D77416ABC7D800F57B12 /* PostFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = FD72D77316ABC7D800F57B12 /* PostFormat.txt */; };
+		FD72D77716ABCDE200F57B12 /* DJEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D77616ABCDE200F57B12 /* DJEntry.m */; };
 		FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		FD7C77E8168386FC0004030C /* Icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FD7C77E7168386FC0004030C /* Icon.iconset */; };
 		FD95076516AAD7D400092963 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FD95076316AAD7D400092963 /* Model.xcdatamodeld */; };
@@ -57,10 +57,10 @@
 		FD601EC0167F759E008DDBF0 /* Things.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Things.h; sourceTree = "<group>"; };
 		FD72D75C16AAEC4E00F57B12 /* ThingsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThingsDataController.h; path = ../ThingsDataController.h; sourceTree = "<group>"; };
 		FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThingsDataController.m; path = ../ThingsDataController.m; sourceTree = "<group>"; };
-		FD72D75F16AAF08900F57B12 /* DJEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJEntry.h; sourceTree = "<group>"; };
-		FD72D76016AAF08900F57B12 /* DJEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJEntry.m; sourceTree = "<group>"; };
 		FD72D76516AB080300F57B12 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		FD72D77316ABC7D800F57B12 /* PostFormat.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostFormat.txt; sourceTree = "<group>"; };
+		FD72D77516ABCDE200F57B12 /* DJEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJEntry.h; sourceTree = "<group>"; };
+		FD72D77616ABCDE200F57B12 /* DJEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJEntry.m; sourceTree = "<group>"; };
 		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
 		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
 		FD7C77E7168386FC0004030C /* Icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Icon.iconset; sourceTree = "<group>"; };
@@ -156,9 +156,9 @@
 		FD72D76216AAF09E00F57B12 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FD72D77516ABCDE200F57B12 /* DJEntry.h */,
+				FD72D77616ABCDE200F57B12 /* DJEntry.m */,
 				FD95076316AAD7D400092963 /* Model.xcdatamodeld */,
-				FD72D75F16AAF08900F57B12 /* DJEntry.h */,
-				FD72D76016AAF08900F57B12 /* DJEntry.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -417,7 +417,7 @@
 				FD95076516AAD7D400092963 /* Model.xcdatamodeld in Sources */,
 				FD95076B16AADCAA00092963 /* OverviewWindowController.m in Sources */,
 				FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */,
-				FD72D76116AAF08900F57B12 /* DJEntry.m in Sources */,
+				FD72D77716ABCDE200F57B12 /* DJEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,7 +2,7 @@
 //  DJEntry.m
 //  Closer
 //
-//  Created by Earl on 1/19/13.
+//  Created by Earl on 1/20/13.
 //  Copyright (c) 2013 Earl. All rights reserved.
 //
 
@@ -11,11 +11,11 @@
 
 @implementation DJEntry
 
+@dynamic dateCollected;
+@dynamic maturityDate;
 @dynamic name;
 @dynamic points;
 @dynamic projectName;
-@dynamic dateCollected;
-@dynamic maturityDate;
 
 + (DJEntry *) entryWithDefaultContext {
 
@@ -24,7 +24,6 @@
 
     
 }
-
 
 
 @end

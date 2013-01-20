@@ -55,6 +55,15 @@ NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
 
 - (void)refreshReport:(id)sender {
 
+    /*
+     What to include in the report:
+     - routines which were not entered
+     - law school readings which not entered
+     - other entries which have matured and which were not entered
+     
+     
+     */
+
 
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Entry"];
 //    request.predicate = [NSPredicate predicateWithFormat:@"dateCollected "]
