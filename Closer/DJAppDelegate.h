@@ -29,8 +29,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+@property (assign) IBOutlet OverviewWindowController *overviewWindowController;
 
-@property OverviewWindowController *overview;
 
 - (IBAction)saveAction:(id)sender;
 

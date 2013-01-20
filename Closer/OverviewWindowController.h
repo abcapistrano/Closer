@@ -11,5 +11,6 @@
 
 @interface OverviewWindowController : NSWindowController
 @property (assign) IBOutlet WebView *viewer;
-
+- (IBAction) refreshReport :(id)sender;
+- (IBAction) postReport:(id)sender;
 @end

@@ -11,7 +11,6 @@
 #import "NSApplication+ESSApplicationCategory.h"
 #import "NSApplication+SheetsAndBlocks.h"
 #import "OverviewWindowController.h"
-#import "ThingsDataController.h"
 @implementation DJAppDelegate
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
@@ -33,7 +32,7 @@
 {
     self = [super init];
     if (self) {
-        _overview = [OverviewWindowController new];
+
     }
     return self;
 }
@@ -41,10 +40,6 @@
 
 - (void) awakeFromNib {
 
-    [[ThingsDataController sharedDataController] processData];
-
-
-    [self.overview showWindow:self];
 
 }
 
