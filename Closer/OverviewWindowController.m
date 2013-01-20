@@ -80,11 +80,11 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
     NSInteger carryOver = [[NSUserDefaults standardUserDefaults] integerForKey:POINTS_CARRYOVER_KEY];
     NSInteger daysDifference = ceil([endDate timeIntervalSinceDate:startDate]/86400);
-    NSInteger deduction = daysDifference * 10;
+    NSInteger deduction = daysDifference * -10;
 
 
-
-    self.totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver - deduction;
+    
+    self.totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver + deduction;
 
 
     NSDictionary *data = @{
@@ -121,11 +121,10 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
                 [self refreshReport:self];
 
-//#ifdef RELEASE
+#ifdef RELEASE
                 [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
-//#endif
+#endif
 
-                [self screenshotPointsReport];
 
                 NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
 
@@ -133,7 +132,7 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
                                                                       [NSBundle mainBundle] URLForResource:@"PostFormat" withExtension:@"txt"]
                                                             encoding:NSUTF8StringEncoding
                                                                error:nil];
-                [email performWithItems:@[format]];
+                [email performWithItems:@[format, self.pointsReport]];
 
                 [self refreshReport:self];
 
@@ -156,34 +155,17 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
     
 }
 
-- (void) screenshotPointsReport {
+- (NSImage *) pointsReport {
 
     WebFrameView *frameView = self.viewer.mainFrame.frameView;
-
     [frameView setAllowsScrolling:NO];
-
     NSView <WebDocumentView> *docView = frameView.documentView;
-
     NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
-
-
-    NSDateFormatter *df = [NSDateFormatter new];
-    df.dateFormat = @"yyyy-MM-dd HHmm";
-
-    NSString *name = [[df stringFromDate:[NSDate date]] stringByAppendingPathExtension:@"pdf"];
-
-    //TODO: USE THE DROPBOX API DIRECTLY TO UPLOAD THE FILE
-
-
-    NSURL *url = [NSURL fileURLWithPathComponents:@[@"/Users/earltagra/Dropbox/Goal Card/Points Log", name]];
-
-    [imgData writeToURL:url atomically:NO];
     [frameView setAllowsScrolling:YES];
 
 
-    //    [[NSUserDefaults standardUserDefaults] setObject:imgData forKey:POINTS_SCREENSHOT_DATA_KEY];
     
-    
+    return [[NSImage alloc] initWithData:imgData];
     
     
 }
@@ -192,10 +174,8 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 - (void) closeBooks {
 
     // set the prefs to the date of closing & carryover points
-
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LAST_CLOSE_DATE_KEY];
     [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
-
     [[NSApp delegate] saveAction:self];
 
 
