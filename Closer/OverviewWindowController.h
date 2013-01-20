@@ -7,11 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class ThingsApplication, ThingsProject;
 @class WebView;
 
 @interface OverviewWindowController : NSWindowController
 @property (assign) IBOutlet WebView *viewer;
-@property (strong) ThingsApplication *things;
 
 @end

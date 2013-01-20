@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 @class OverviewWindowController;
+@class ThingsDataController;
+
 @interface DJAppDelegate : NSObject <NSApplicationDelegate>
 //TODO: UNCOMMENT THIS LINES!
 
