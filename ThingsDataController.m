@@ -113,7 +113,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
 
                 if ([toDo.tagNames containsSubstring:@"routine"]) {
 
-                    entry.maturityDate = [NSDate date];
+                    entry.maturityDate = toDo.completionDate;
                     entry.points = @(rawPoints);
 
                 } else if ([toDo.area.name isEqualToString:@"Law Readings"]) {
@@ -121,7 +121,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     //2x points for law readings
 
 
-                    entry.maturityDate = [NSDate date];
+                    entry.maturityDate = toDo.completionDate;
                     entry.points =  @(2 * rawPoints);
                 }
 
@@ -134,7 +134,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     //get a random number from 
                     NSInteger randomDay = [randomizer randomUInt32From:30 to:90];
                     [dc setDay:randomDay];
-                    NSDate *maturityDate = [[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:[NSDate date] options:0];
+                    NSDate *maturityDate = [[NSCalendar currentCalendar] dateByAddingComponents:dc toDate:toDo.completionDate options:0];
 
                     entry.maturityDate = maturityDate;
                 }

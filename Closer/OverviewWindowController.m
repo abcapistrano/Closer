@@ -114,7 +114,6 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
 - (void) postReport:(id)sender {
 
-
     void (^action) (void *, NSInteger) = ^(void *context, NSInteger returnCode){
 
             if (returnCode == NSOKButton) {
