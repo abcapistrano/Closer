@@ -15,6 +15,7 @@
 #import "MTRandom.h"
 #import "NSString+GenericString.h"
 NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
+NSString * const LAST_DEDUCTION_DATE_KEY = @"lastDeductionDate";
 @implementation ThingsDataController
 
 
@@ -42,6 +43,7 @@ NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
 
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{
                                            LAST_CLOSE_DATE_KEY :  [NSDate dateWithNaturalLanguageString:@"December 20, 2012 12 am"],
+                                        LAST_DEDUCTION_DATE_KEY: [NSDate dateWithNaturalLanguageString:@"January 22, 2013 12am GMT+8"],
                                           POINTS_CARRYOVER_KEY : @0}];
 
         self.things = [SBApplication applicationWithBundleIdentifier:@"com.culturedcode.Things"];

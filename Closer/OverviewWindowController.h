@@ -13,6 +13,7 @@
 @property (assign) IBOutlet WebView *viewer;
 @property (assign) NSInteger totalPoints;
 @property (nonatomic, readonly) NSImage *pointsReport;
+@property (assign) NSInteger deductions;
 - (IBAction) refreshReport :(id)sender;
 - (IBAction) postReport:(id)sender;
 @end

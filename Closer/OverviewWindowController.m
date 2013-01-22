@@ -13,8 +13,8 @@
 #include "Constants.h"
 #import "ThingsDataController.h"
 #import "NSApplication+ESSApplicationCategory.h"
+#import "NSDate+MoreDates.h"
 NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
-NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of deduction must be set at 00:00 for that day
 
 @interface OverviewWindowController ()
 
@@ -78,18 +78,25 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
     [df setTimeStyle:NSDateFormatterShortStyle];
 
 
+
     NSInteger carryOver = [[NSUserDefaults standardUserDefaults] integerForKey:POINTS_CARRYOVER_KEY];
-    NSInteger daysDifference = ceil([endDate timeIntervalSinceDate:startDate]/86400);
-    NSInteger deduction = daysDifference * -10;
+
+    NSDate *lastDeductionDate =[[NSUserDefaults standardUserDefaults] objectForKey:LAST_DEDUCTION_DATE_KEY];
+
+
+
+    NSInteger daysDifference = [endDate daysSinceDate:lastDeductionDate];
+    self.deductions = daysDifference * -10;     // deduct only if the time difference is at least a day
+
 
 
     
-    self.totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver + deduction;
+    self.totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver + self.deductions;
 
 
     NSDictionary *data = @{
     @"pointsCarryover" : @(carryOver),
-    @"pointsDeduction" : @(deduction),
+    @"pointsDeduction" : @(self.deductions),
     @"date": [df stringFromDate:[NSDate date]],
     @"totalPoints" : @(self.totalPoints),
     @"entries": entries,
@@ -120,9 +127,9 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
                 [self refreshReport:self];
 
-#ifdef RELEASE
+//#ifdef RELEASE
                 [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
-#endif
+//#endif
 
 
                 NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
@@ -172,9 +179,19 @@ NSString * const LAST_DATE_OF_DEDUCTION_KEY = @"dateOfDeduction"; //the date of 
 
 - (void) closeBooks {
 
+
+
     // set the prefs to the date of closing & carryover points
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LAST_CLOSE_DATE_KEY];
     [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
+    if (self.deductions < 0) {
+
+        [[NSUserDefaults standardUserDefaults] setObject:[[NSDate date] dateAtDawn] forKey:LAST_DEDUCTION_DATE_KEY];
+
+
+
+    }
+
     [[NSApp delegate] saveAction:self];
 
 
