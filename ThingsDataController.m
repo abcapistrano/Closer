@@ -111,16 +111,20 @@ Goes over each todo/project in the logbook which has points so that the correspo
                 entry.projectName = toDo.project.name;
                 entry.dateCollected = [NSDate date];
 
-                // if the entry is a routine or law school reading...it matures immediately
+                // if the entry is a routine or school work..it matures immediately
+                NSString *area = toDo.area.name;
+                if (!area) area = toDo.project.area.name;
+                
+
 
                 if ([toDo.tagNames containsSubstring:@"routine"]) {
 
                     entry.maturityDate = toDo.completionDate;
                     entry.points = @(rawPoints);
 
-                } else if ([toDo.area.name isEqualToString:@"Law Readings"]) {
+                } else if ([area isEqualToString:@"School Work"]) {
 
-                    //2x points for law readings
+                    //2x points for school work.
 
 
                     entry.maturityDate = toDo.completionDate;
