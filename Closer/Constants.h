@@ -12,7 +12,7 @@
 extern NSString * const POINTS_CARRYOVER_KEY;
 extern NSString * const LAST_CLOSE_DATE_KEY;
 extern NSString * const LAST_DEDUCTION_DATE_KEY;
-
+extern NSString * const POINTS_REPORT_IMAGE_DATA_KEY;
 
 
 

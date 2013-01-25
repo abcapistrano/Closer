@@ -18,6 +18,10 @@
 		FD72D77716ABCDE200F57B12 /* DJEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D77616ABCDE200F57B12 /* DJEntry.m */; };
 		FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		FD7C77E8168386FC0004030C /* Icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FD7C77E7168386FC0004030C /* Icon.iconset */; };
+		FD861EC916B2AB500037E760 /* DJPostWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861EC716B2AB500037E760 /* DJPostWindowController.m */; };
+		FD861ECA16B2AB500037E760 /* PostWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD861EC816B2AB500037E760 /* PostWindow.xib */; };
+		FD861ECD16B2B7A00037E760 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD861ECC16B2B7A00037E760 /* Social.framework */; };
+		FD861ECF16B2B7A40037E760 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD861ECE16B2B7A40037E760 /* Accounts.framework */; };
 		FD95076516AAD7D400092963 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FD95076316AAD7D400092963 /* Model.xcdatamodeld */; };
 		FD95076B16AADCAA00092963 /* OverviewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD95076916AADCAA00092963 /* OverviewWindowController.m */; };
 		FD95076C16AADCAA00092963 /* OverviewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD95076A16AADCAA00092963 /* OverviewWindowController.xib */; };
@@ -73,6 +77,11 @@
 		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
 		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
 		FD7C77E7168386FC0004030C /* Icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Icon.iconset; sourceTree = "<group>"; };
+		FD861EC616B2AB500037E760 /* DJPostWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJPostWindowController.h; sourceTree = "<group>"; };
+		FD861EC716B2AB500037E760 /* DJPostWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJPostWindowController.m; sourceTree = "<group>"; };
+		FD861EC816B2AB500037E760 /* PostWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostWindow.xib; sourceTree = "<group>"; };
+		FD861ECC16B2B7A00037E760 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		FD861ECE16B2B7A40037E760 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		FD95076416AAD7D400092963 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		FD95076816AADCAA00092963 /* OverviewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverviewWindowController.h; sourceTree = "<group>"; };
 		FD95076916AADCAA00092963 /* OverviewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverviewWindowController.m; sourceTree = "<group>"; };
@@ -153,6 +162,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD861ECF16B2B7A40037E760 /* Accounts.framework in Frameworks */,
+				FD861ECD16B2B7A00037E760 /* Social.framework in Frameworks */,
 				FDE60EDD1680C96A00AE8703 /* WebKit.framework in Frameworks */,
 				FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */,
 				FDED2AE31678C90E00BC416C /* Cocoa.framework in Frameworks */,
@@ -236,6 +247,8 @@
 		FDED2AD31678C90E00BC416C = {
 			isa = PBXGroup;
 			children = (
+				FD861ECE16B2B7A40037E760 /* Accounts.framework */,
+				FD861ECC16B2B7A00037E760 /* Social.framework */,
 				FDE60EDC1680C96900AE8703 /* WebKit.framework */,
 				FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */,
 				FDED2AE81678C90E00BC416C /* Closer */,
@@ -283,6 +296,9 @@
 				FDED2AF51678C90E00BC416C /* DJAppDelegate.m */,
 				FD72D75C16AAEC4E00F57B12 /* ThingsDataController.h */,
 				FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */,
+				FD861EC616B2AB500037E760 /* DJPostWindowController.h */,
+				FD861EC716B2AB500037E760 /* DJPostWindowController.m */,
+				FD861EC816B2AB500037E760 /* PostWindow.xib */,
 				FD2A3EA016AEF724004E1448 /* NSDate+MoreDates.h */,
 				FD2A3E9F16AEF724004E1448 /* NSDate+MoreDates.m */,
 				FD95076816AADCAA00092963 /* OverviewWindowController.h */,
@@ -378,6 +394,7 @@
 				FD45979A168F409900D820DC /* Rules Format.mustache in Resources */,
 				FD95076C16AADCAA00092963 /* OverviewWindowController.xib in Resources */,
 				FD72D77416ABC7D800F57B12 /* PostFormat.txt in Resources */,
+				FD861ECA16B2AB500037E760 /* PostWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +453,7 @@
 				FD1D0C8A16ABDE75006B4254 /* MTRandom.m in Sources */,
 				FD1D0C8D16ABE33E006B4254 /* NSString+GenericString.m in Sources */,
 				FD2A3EA116AEF724004E1448 /* NSDate+MoreDates.m in Sources */,
+				FD861EC916B2AB500037E760 /* DJPostWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
