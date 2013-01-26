@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 @class OverviewWindowController;
 @class ThingsDataController;
+@class Report;
 
 @interface DJAppDelegate : NSObject <NSApplicationDelegate>
 
@@ -19,6 +20,12 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (assign) IBOutlet OverviewWindowController *overviewWindowController;
+
+
+@property (readonly, strong, nonatomic) Report *lastReport;
+@property (readonly, strong, nonatomic) Report *currentReport;
+
+
 
 
 - (IBAction)saveAction:(id)sender;

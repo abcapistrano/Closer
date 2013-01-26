@@ -9,13 +9,13 @@
 #import "ThingsDataController.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 #import "Things.h"
-#import "DJEntry.h"
+#import "DJEntry+AdditionalMethods.h"
 #import "DJAppDelegate.h"
 #include "Constants.h"
 #import "MTRandom.h"
 #import "NSString+GenericString.h"
-NSString * const LAST_CLOSE_DATE_KEY = @"lastCloseDate";
-NSString * const LAST_DEDUCTION_DATE_KEY = @"lastDeductionDate";
+#import "Report+AdditionalMethods.h"
+
 @implementation ThingsDataController
 
 
@@ -41,10 +41,6 @@ NSString * const LAST_DEDUCTION_DATE_KEY = @"lastDeductionDate";
         // Initialization code here.
 
 
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-                                           LAST_CLOSE_DATE_KEY :  [NSDate dateWithNaturalLanguageString:@"December 20, 2012 12 am"],
-                                        LAST_DEDUCTION_DATE_KEY: [NSDate dateWithNaturalLanguageString:@"January 22, 2013 12am GMT+8"],
-                                          POINTS_CARRYOVER_KEY : @0}];
 
         self.things = [SBApplication applicationWithBundleIdentifier:@"com.culturedcode.Things"];
         
@@ -55,7 +51,7 @@ NSString * const LAST_DEDUCTION_DATE_KEY = @"lastDeductionDate";
     return self;
 }
 
-
+// contains a single method for now. in the future may be expanded.
 - (void) processData {
 
     [self processLoggedToDos];
@@ -77,20 +73,22 @@ Goes over each todo/project in the logbook which has points so that the correspo
     ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
     SBElementArray *toDos = logbook.toDos;
 
-    NSDate *lastCloseDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@",  lastCloseDate];
-
+    Report *lastReport = [[NSApp delegate] lastReport];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@",  lastReport.lastEntryDate];
     [toDos filterUsingPredicate:pred];
     NSArray *filteredTodos = [toDos get];
 
     // Iterate over the todos
 
-    NSRegularExpression *exp = [[NSRegularExpression alloc] initWithPattern:@"[-+]?\\d+$" options:0
+    NSRegularExpression *exp = [[NSRegularExpression alloc] initWithPattern:@"^.+\\. ([-+]?\\d+)$" options:0
                                                                       error:NULL];
 
 
     MTRandom *randomizer = [[MTRandom alloc] init];
+
     
+
+
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
 
         if (toDo.status == ThingsStatusCompleted) {
@@ -99,18 +97,20 @@ Goes over each todo/project in the logbook which has points so that the correspo
             NSTextCheckingResult *result = [exp firstMatchInString:toDoName options:0 range:NSMakeRange(0, [toDoName length])];
 
             if (result) {
-                NSInteger rawPoints = [[toDoName substringWithRange:result.range] integerValue];
+                NSRange pointRange = [result rangeAtIndex:1];
+                NSInteger rawPoints = [[toDoName substringWithRange:pointRange] integerValue];
 
 
                 DJEntry *entry = [DJEntry entryWithDefaultContext];
-                
-                NSRange nameRange = NSMakeRange(0, result.range.location-1);
+                NSRange nameRange = NSMakeRange(0, pointRange.location-1);
 
                 entry.name = [toDoName substringWithRange:nameRange];
                 entry.points = @(rawPoints);
                 entry.projectName = toDo.project.name;
-                entry.dateCollected = [NSDate date];
+                entry.completionDate = toDo.completionDate;
 
+
+                
                 // if the entry is a routine or school work..it matures immediately
                 NSString *area = toDo.area.name;
                 if (!area) area = toDo.project.area.name;

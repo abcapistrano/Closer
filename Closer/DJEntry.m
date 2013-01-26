@@ -2,28 +2,21 @@
 //  DJEntry.m
 //  Closer
 //
-//  Created by Earl on 1/20/13.
+//  Created by Earl on 1/26/13.
 //  Copyright (c) 2013 Earl. All rights reserved.
 //
 
 #import "DJEntry.h"
+#import "Report.h"
 
 
 @implementation DJEntry
 
-@dynamic dateCollected;
+@dynamic completionDate;
 @dynamic maturityDate;
 @dynamic name;
 @dynamic points;
 @dynamic projectName;
-
-+ (DJEntry *) entryWithDefaultContext {
-
-    return [NSEntityDescription insertNewObjectForEntityForName:@"Entry"
-                                         inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-
-    
-}
-
+@dynamic report;
 
 @end

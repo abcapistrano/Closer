@@ -15,11 +15,13 @@
 #import "NSApplication+ESSApplicationCategory.h"
 #import "NSDate+MoreDates.h"
 #import "DJPostWindowController.h"
+#import "Report+AdditionalMethods.h"
 
-NSString * const POINTS_CARRYOVER_KEY = @"carryOver";
-NSString * const POINTS_REPORT_IMAGE_DATA_KEY = @"pointsReportImageDataKey";
 
 @interface OverviewWindowController ()
+
+
+
 
 @end
 
@@ -48,8 +50,6 @@ NSString * const POINTS_REPORT_IMAGE_DATA_KEY = @"pointsReportImageDataKey";
 {
     [super windowDidLoad];
 
-    [self refreshReport:self];
-
 
 }
 
@@ -60,21 +60,45 @@ NSString * const POINTS_REPORT_IMAGE_DATA_KEY = @"pointsReportImageDataKey";
     [[ThingsDataController sharedDataController] processData];
 
 
+    Report *lastReport = [[NSApp delegate] lastReport];
+    Report *currentReport = [[NSApp delegate] currentReport];
+
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Entry"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"maturityDate >%@ AND maturityDate < %@", lastReport.closingDate, currentReport.closingDate];
+    [request setPredicate:pred];
 
-    NSDate *startDate = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_CLOSE_DATE_KEY];
-    NSDate *endDate = [NSDate date];
+    NSArray *results = [[[NSApp delegate] managedObjectContext] executeFetchRequest:request error:nil];
+    [currentReport addEntries:[NSSet setWithArray:results]];
 
-    request.predicate = [NSPredicate predicateWithFormat:@"maturityDate > %@ AND maturityDate < %@", startDate, endDate ];
 
-    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"points" ascending:NO];
-    request.sortDescriptors = @[sd];
+    NSInteger carryOver = lastReport.totalPoints.integerValue;
+    NSInteger daysDifference = [currentReport.closingDate daysSinceDate:lastReport.closingDate];
+    NSInteger deductions = daysDifference * -10;     // deduct only if the time difference is at least a day
 
-    NSError *error;
-    NSArray *entries = [[(DJAppDelegate *)[[NSApplication sharedApplication] delegate] managedObjectContext] executeFetchRequest:request error:&error];
+    currentReport.totalPoints = @(currentReport.subtotal + carryOver + deductions);
+    currentReport.deductions = @(deductions);
 
-    // Generate report
+    // Save screenshot;
 
+    WebFrameView *frameView = self.viewer.mainFrame.frameView;
+    [frameView setAllowsScrolling:NO];
+    NSView <WebDocumentView> *docView = frameView.documentView;
+    NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
+    [frameView setAllowsScrolling:YES];
+
+    NSImage *image = [[NSImage alloc] initWithData:imgData];
+
+
+    [image lockFocus];
+
+    NSBitmapImageRep* bitmapRep = [[NSBitmapImageRep alloc]
+                                   initWithFocusedViewRect:NSMakeRect(0, 0, image.size.width, image.size.height)]
+    ;
+
+    [image unlockFocus];
+    currentReport.pointsReport = [bitmapRep representationUsingType:NSPNGFileType properties:nil];
+
+    //TODO: CHANGE DATE STyLE
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle:NSDateFormatterShortStyle];
@@ -82,45 +106,35 @@ NSString * const POINTS_REPORT_IMAGE_DATA_KEY = @"pointsReportImageDataKey";
 
 
 
-    NSInteger carryOver = [[NSUserDefaults standardUserDefaults] integerForKey:POINTS_CARRYOVER_KEY];
-
-    NSDate *lastDeductionDate =[[NSUserDefaults standardUserDefaults] objectForKey:LAST_DEDUCTION_DATE_KEY];
-
-
-
-    NSInteger daysDifference = [endDate daysSinceDate:lastDeductionDate];
-    self.deductions = daysDifference * -10;     // deduct only if the time difference is at least a day
-
-
-
-    
-    self.totalPoints = [[entries valueForKeyPath:@"@sum.points"] integerValue] + carryOver + self.deductions;
-
-
+    //TODO: UPDATE GR MUSTACHE TO REFER TO THE CURRENT REPORT OBJECT
     NSDictionary *data = @{
     @"pointsCarryover" : @(carryOver),
-    @"pointsDeduction" : @(self.deductions),
+    @"pointsDeduction" : @(deductions),
     @"date": [df stringFromDate:[NSDate date]],
-    @"totalPoints" : @(self.totalPoints),
-    @"entries": entries,
+    @"totalPoints" : currentReport.totalPoints,
+    @"entries": currentReport.entries.allObjects,
 
     };
 
+
+    NSError *error;
     NSString *result = [GRMustacheTemplate renderObject:data fromResource:@"Points Format" bundle:[NSBundle mainBundle] error:&error];
     if (!result) {
-        
-        
+
+
         NSLog(@"error: %@", [error localizedDescription]);
     } else {
-        
+
         [[self.viewer mainFrame] loadHTMLString:result baseURL:nil];
         
     }
     
     
-
-
+    
+    
 }
+
+
 
 - (void) postReport:(id)sender {
 
@@ -176,50 +190,12 @@ NSString * const POINTS_REPORT_IMAGE_DATA_KEY = @"pointsReportImageDataKey";
     
 }
 
-- (NSData *) pointsReportImageData {
-
-    WebFrameView *frameView = self.viewer.mainFrame.frameView;
-    [frameView setAllowsScrolling:NO];
-    NSView <WebDocumentView> *docView = frameView.documentView;
-    NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
-    [frameView setAllowsScrolling:YES];
-
-    NSImage *image = [[NSImage alloc] initWithData:imgData];
-
-
-    [image lockFocus];
-
-    NSBitmapImageRep* bitmapRep = [[NSBitmapImageRep alloc]
-                                    initWithFocusedViewRect:NSMakeRect(0, 0, image.size.width, image.size.height)]
-                                   ;
-
-    [image unlockFocus];
-
-    NSData* data = [bitmapRep representationUsingType:NSPNGFileType properties:nil];
-
-
-    
-   // return 
-    return data;
-    
-}
 
 
 - (void) closeBooks {
 
 
-
-    // set the prefs to the date of closing & carryover points
-    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LAST_CLOSE_DATE_KEY];
-    [[NSUserDefaults standardUserDefaults] setInteger:self.totalPoints forKey:POINTS_CARRYOVER_KEY];
-    if (self.deductions < 0) {
-
-        [[NSUserDefaults standardUserDefaults] setObject:[[NSDate date] dateAtDawn] forKey:LAST_DEDUCTION_DATE_KEY];
-
-
-
-    }
-
+    //be sure to refresh!
     [[NSApp delegate] saveAction:self];
 
 

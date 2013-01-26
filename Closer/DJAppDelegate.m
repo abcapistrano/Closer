@@ -11,18 +11,15 @@
 #import "NSApplication+ESSApplicationCategory.h"
 #import "NSApplication+SheetsAndBlocks.h"
 #import "OverviewWindowController.h"
+#import "Report+AdditionalMethods.h"
+
 @implementation DJAppDelegate
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
-
-#pragma mark Core Data
-
-
-
-
-
+@synthesize lastReport = _lastReport;
+@synthesize currentReport = _currentReport;
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "com.demonjelly.A" in the user's Application Support directory.
 - (NSURL *)applicationFilesDirectory
@@ -45,6 +42,10 @@
 }
 
 // Returns the persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.)
+
+
+
+
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (_persistentStoreCoordinator) {
@@ -88,7 +89,12 @@
 
     NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:@"Closer.storedata"];
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&error]) {
+
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption: @YES};
+    
+
+
+    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:options error:&error]) {
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
@@ -139,7 +145,82 @@
     }
 }
 
+- (void) applicationDidFinishLaunching:(NSNotification *)notification {
 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSString *transitionKey = @"transitionJanuary2013";
+    BOOL hasTransitioned  = [defaults boolForKey:transitionKey];
+    if (hasTransitioned == NO) {
+
+
+        Report *initial = [NSEntityDescription insertNewObjectForEntityForName:@"Report"
+                                                        inManagedObjectContext:self.managedObjectContext];
+
+        NSDate *transitionDate =[NSDate dateWithNaturalLanguageString:@"January 25, 2013 23:59:59 GMT+8"];
+        initial.closingDate = transitionDate ;
+        initial.totalPoints = @58;
+
+        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Entry"];
+        NSPredicate *date = [NSPredicate predicateWithFormat:@"maturityDate < %@", transitionDate];
+        request.predicate = date;
+
+        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+
+
+        [results makeObjectsPerformSelector:@selector(setCompletionDate:) withObject:transitionDate];
+
+        [initial addEntries:[NSSet setWithArray:results]];
+
+
+
+
+        [self saveAction:self];
+        [defaults setBool:YES forKey:transitionKey];
+    }
+
+    [self.overviewWindowController refreshReport:self];
+
+
+
+}
+
+
+- (Report *) lastReport {
+
+    if (_lastReport) {
+
+        return _lastReport;
+
+
+    }
+
+    //TODO: GET THE LAST REPORT BY URI AS PERFORMANCE OPTIMIZATION
+
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Report"];
+    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"closingDate" ascending:YES];
+    [request setSortDescriptors:@[sd]];
+
+    
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return [results lastObject];
+
+
+
+
+}
+
+- (Report *) currentReport {
+    
+    if (_currentReport) {
+        return _currentReport;
+    }
+
+    _currentReport = [NSEntityDescription insertNewObjectForEntityForName:@"Report"
+                                                   inManagedObjectContext:self.managedObjectContext];
+    return _currentReport;
+}
 
 @end
 

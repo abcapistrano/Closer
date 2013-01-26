@@ -15,13 +15,16 @@
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
 		FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */; };
 		FD72D77416ABC7D800F57B12 /* PostFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = FD72D77316ABC7D800F57B12 /* PostFormat.txt */; };
-		FD72D77716ABCDE200F57B12 /* DJEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D77616ABCDE200F57B12 /* DJEntry.m */; };
 		FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		FD7C77E8168386FC0004030C /* Icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FD7C77E7168386FC0004030C /* Icon.iconset */; };
 		FD861EC916B2AB500037E760 /* DJPostWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861EC716B2AB500037E760 /* DJPostWindowController.m */; };
 		FD861ECA16B2AB500037E760 /* PostWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD861EC816B2AB500037E760 /* PostWindow.xib */; };
 		FD861ECD16B2B7A00037E760 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD861ECC16B2B7A00037E760 /* Social.framework */; };
 		FD861ECF16B2B7A40037E760 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD861ECE16B2B7A40037E760 /* Accounts.framework */; };
+		FD861ED216B362A10037E760 /* DJEntry+AdditionalMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861ED116B362A00037E760 /* DJEntry+AdditionalMethods.m */; };
+		FD861EEA16B369170037E760 /* DJEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861EE916B369170037E760 /* DJEntry.m */; };
+		FD861EEE16B3709D0037E760 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861EED16B3709D0037E760 /* Report.m */; };
+		FD861EF116B370D90037E760 /* Report+AdditionalMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861EF016B370D90037E760 /* Report+AdditionalMethods.m */; };
 		FD95076516AAD7D400092963 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FD95076316AAD7D400092963 /* Model.xcdatamodeld */; };
 		FD95076B16AADCAA00092963 /* OverviewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD95076916AADCAA00092963 /* OverviewWindowController.m */; };
 		FD95076C16AADCAA00092963 /* OverviewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD95076A16AADCAA00092963 /* OverviewWindowController.xib */; };
@@ -72,8 +75,6 @@
 		FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThingsDataController.m; path = ../ThingsDataController.m; sourceTree = "<group>"; };
 		FD72D76516AB080300F57B12 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		FD72D77316ABC7D800F57B12 /* PostFormat.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostFormat.txt; sourceTree = "<group>"; };
-		FD72D77516ABCDE200F57B12 /* DJEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJEntry.h; sourceTree = "<group>"; };
-		FD72D77616ABCDE200F57B12 /* DJEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJEntry.m; sourceTree = "<group>"; };
 		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
 		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
 		FD7C77E7168386FC0004030C /* Icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Icon.iconset; sourceTree = "<group>"; };
@@ -82,6 +83,15 @@
 		FD861EC816B2AB500037E760 /* PostWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostWindow.xib; sourceTree = "<group>"; };
 		FD861ECC16B2B7A00037E760 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		FD861ECE16B2B7A40037E760 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		FD861ED016B362A00037E760 /* DJEntry+AdditionalMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DJEntry+AdditionalMethods.h"; sourceTree = "<group>"; };
+		FD861ED116B362A00037E760 /* DJEntry+AdditionalMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DJEntry+AdditionalMethods.m"; sourceTree = "<group>"; };
+		FD861EE816B369170037E760 /* DJEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJEntry.h; sourceTree = "<group>"; };
+		FD861EE916B369170037E760 /* DJEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJEntry.m; sourceTree = "<group>"; };
+		FD861EEB16B369560037E760 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
+		FD861EEC16B3709D0037E760 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
+		FD861EED16B3709D0037E760 /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
+		FD861EEF16B370D90037E760 /* Report+AdditionalMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Report+AdditionalMethods.h"; sourceTree = "<group>"; };
+		FD861EF016B370D90037E760 /* Report+AdditionalMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Report+AdditionalMethods.m"; sourceTree = "<group>"; };
 		FD95076416AAD7D400092963 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		FD95076816AADCAA00092963 /* OverviewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverviewWindowController.h; sourceTree = "<group>"; };
 		FD95076916AADCAA00092963 /* OverviewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverviewWindowController.m; sourceTree = "<group>"; };
@@ -176,9 +186,15 @@
 		FD72D76216AAF09E00F57B12 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				FD72D77516ABCDE200F57B12 /* DJEntry.h */,
-				FD72D77616ABCDE200F57B12 /* DJEntry.m */,
+				FD861ED016B362A00037E760 /* DJEntry+AdditionalMethods.h */,
+				FD861ED116B362A00037E760 /* DJEntry+AdditionalMethods.m */,
+				FD861EEF16B370D90037E760 /* Report+AdditionalMethods.h */,
+				FD861EF016B370D90037E760 /* Report+AdditionalMethods.m */,
+				FD861EE816B369170037E760 /* DJEntry.h */,
+				FD861EE916B369170037E760 /* DJEntry.m */,
 				FD95076316AAD7D400092963 /* Model.xcdatamodeld */,
+				FD861EEC16B3709D0037E760 /* Report.h */,
+				FD861EED16B3709D0037E760 /* Report.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -449,11 +465,14 @@
 				FD95076516AAD7D400092963 /* Model.xcdatamodeld in Sources */,
 				FD95076B16AADCAA00092963 /* OverviewWindowController.m in Sources */,
 				FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */,
-				FD72D77716ABCDE200F57B12 /* DJEntry.m in Sources */,
 				FD1D0C8A16ABDE75006B4254 /* MTRandom.m in Sources */,
 				FD1D0C8D16ABE33E006B4254 /* NSString+GenericString.m in Sources */,
 				FD2A3EA116AEF724004E1448 /* NSDate+MoreDates.m in Sources */,
 				FD861EC916B2AB500037E760 /* DJPostWindowController.m in Sources */,
+				FD861ED216B362A10037E760 /* DJEntry+AdditionalMethods.m in Sources */,
+				FD861EEA16B369170037E760 /* DJEntry.m in Sources */,
+				FD861EEE16B3709D0037E760 /* Report.m in Sources */,
+				FD861EF116B370D90037E760 /* Report+AdditionalMethods.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,9 +611,10 @@
 		FD95076316AAD7D400092963 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FD861EEB16B369560037E760 /* Model 2.xcdatamodel */,
 				FD95076416AAD7D400092963 /* Model.xcdatamodel */,
 			);
-			currentVersion = FD95076416AAD7D400092963 /* Model.xcdatamodel */;
+			currentVersion = FD861EEB16B369560037E760 /* Model 2.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

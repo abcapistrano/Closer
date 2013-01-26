@@ -9,13 +9,14 @@
 #import <Cocoa/Cocoa.h>
 @class WebView;
 @class DJPostWindowController;
+@class Report;
+
 @interface OverviewWindowController : NSWindowController
 @property (assign) IBOutlet WebView *viewer;
-@property (assign) NSInteger totalPoints;
-@property (nonatomic, readonly) NSData *pointsReportImageData;
-@property (assign) NSInteger deductions;
+@property (nonatomic, strong) DJPostWindowController *postWindowController;
 
-@property (strong) DJPostWindowController *postWindowController;
+
+
 
 - (IBAction) refreshReport :(id)sender;
 - (IBAction) postReport:(id)sender;
