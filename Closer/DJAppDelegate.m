@@ -119,7 +119,7 @@
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
-    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
 
     return _managedObjectContext;
@@ -199,6 +199,10 @@
 
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Report"];
     NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"closingDate" ascending:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self != %@", self.currentReport];
+    [request setPredicate:predicate];
+
+
     [request setSortDescriptors:@[sd]];
 
     

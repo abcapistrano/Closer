@@ -2,20 +2,11 @@
 <Bucket
    type = "1"
    version = "1.0">
-   <SymbolicBreakpoints>
-      <SymbolicBreakpoint
+   <ExceptionBreakpoints>
+      <ExceptionBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         symbolName = "-[NSException raise]"
-         moduleName = "">
-      </SymbolicBreakpoint>
-   </SymbolicBreakpoints>
-   <ExceptionBreakpoints>
-      <ExceptionBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "Yes"
          scope = "1"
          stopOnStyle = "0">
       </ExceptionBreakpoint>

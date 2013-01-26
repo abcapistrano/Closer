@@ -170,8 +170,8 @@ NSString * const API_KEY = @"412976472118083";
 
     if (returnCode == NSOKButton) {
 
-        // refresh!
-        [[NSApp delegate] saveAction:self];
+        DJAppDelegate *delegate = (DJAppDelegate *) [NSApp delegate];
+        [delegate saveAction:self];
 
         
     }

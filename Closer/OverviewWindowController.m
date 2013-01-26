@@ -43,6 +43,9 @@
     [self showWindow:self];
     [self.viewer setFrameLoadDelegate:self];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshReport:) name:@"Facebook Post" object:nil];
+
 }
 
 - (void)windowDidLoad
@@ -56,10 +59,8 @@
 
 - (void)refreshReport:(id)sender {
 
-    NSManagedObjectContext *parentContext = [[NSApp delegate] managedObjectContext];
-    NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [childContext setParentContext:parentContext];
-    [[ThingsDataController sharedDataController] importToDosToContext:childContext];
+ 
+    [[ThingsDataController sharedDataController] importToDos];
 //    [[ThingsDataController sharedDataController] processData];
 
 
@@ -71,8 +72,8 @@
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"maturityDate >%@ AND maturityDate < %@", lastReport.closingDate, currentReport.closingDate];
     [request setPredicate:pred];
 
-    NSArray *results = [childContext executeFetchRequest:request error:nil];
-//    [currentReport addEntries:[NSSet setWithArray:results]];
+    NSArray *results = [[[NSApp delegate] managedObjectContext] executeFetchRequest:request error:nil];
+    [currentReport addEntries:[NSSet setWithArray:results]];
 
 
     NSInteger carryOver = lastReport.totalPoints.integerValue;
@@ -109,7 +110,8 @@
         NSLog(@"error: %@", [error localizedDescription]);
     } else {
 
-        [[self.viewer mainFrame] loadHTMLString:result baseURL:nil];
+      
+        [[self.viewer mainFrame]  loadHTMLString:result baseURL:nil];
    
 
         
@@ -163,6 +165,12 @@
 
 };
 
+- (void) dealloc {
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    
+}
 
 
 

@@ -15,6 +15,9 @@
 #import "NSString+GenericString.h"
 #import "Report+AdditionalMethods.h"
 
+
+NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
+
 @implementation ThingsDataController
 
 
@@ -42,12 +45,9 @@
 
 
         self.things = [SBApplication applicationWithBundleIdentifier:@"com.culturedcode.Things"];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(clearAddedEntries:)
-                                                      name:NSManagedObjectContextDidSaveNotification
-                                                   object:[[NSApp delegate] managedObjectContext]];
-
+        self.cache = [NSCache new];
+        self.cache.name = @"Cache";
+       
 
     }
 
@@ -55,33 +55,29 @@
 }
 
 
-
-// contains a single method for now. in the future may be expanded.
-//- (void) processData {
-//
-//    [self discardEntries];
-//    [self processLoggedToDos];
-//    
-//}
-
-
-/*
-
-processLoggedToDos:
-Goes over each todo/project in the logbook which has points so that the corresponding NSManagedObject is created without saving the managedobject context.
- 
-*/
-
 - (NSUndoManager *) undoManager {
 
     return [[[NSApp delegate] managedObjectContext] undoManager];
 }
 
+- (void) discardEntries {
 
-- (void) importToDosToContext: (NSManagedObjectContext *) context{
+    NSMutableSet *entriesAdded = [self.cache objectForKey:ADDED_ENTRIES_KEY];
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
 
-//    NSManagedObjectContext *temporary = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
-//    [temporary setParentContext:[[NSApp delegate] managedObjectContext]];
+    [entriesAdded enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        [moc deleteObject:obj];
+    }];
+
+
+    [self.cache removeAllObjects];
+
+}
+
+
+- (void) importToDos {
+    [self discardEntries];
+    NSMutableSet *addedEntries = [NSMutableSet set];
 
 
     ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
@@ -111,7 +107,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
                 NSInteger rawPoints = [[toDoName substringWithRange:pointRange] integerValue];
 
 
-                DJEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:@"Entry" inManagedObjectContext:context];
+                DJEntry *entry = [DJEntry entryWithDefaultContext];
                 NSRange nameRange = NSMakeRange(0, pointRange.location-1);
 
                 entry.name = [toDoName substringWithRange:nameRange];
@@ -167,6 +163,9 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     
                 }
 
+                [addedEntries addObject:entry];
+                
+
 
             }
 
@@ -175,12 +174,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
          
     }];
 
-
-//    [context performBlockAndWait:^{
-//        NSError *error;
-//        BOOL success = [context save:&error];
-//        NSLog(@"success: %d", success);
-//    }];
+    [self.cache setObject:addedEntries forKey:ADDED_ENTRIES_KEY];
 
 }
 

@@ -15,7 +15,7 @@
 @property (strong) ThingsApplication *things;
 @property (strong) NSMutableSet *addedEntries;
 @property (nonatomic, readonly) NSUndoManager *undoManager;
+@property (strong) NSCache *cache;
 + (id)sharedDataController;
-- (void) importToDosToContext: (NSManagedObjectContext *) context;
-
+- (void) importToDos;
 @end
