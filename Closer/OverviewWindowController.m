@@ -7,10 +7,8 @@
 //
 
 #import "OverviewWindowController.h"
-#import <WebKit/WebKit.h>
 #import "GRMustache.h"
 #import "DJAppDelegate.h"
-#include "Constants.h"
 #import "ThingsDataController.h"
 #import "NSApplication+ESSApplicationCategory.h"
 #import "NSDate+MoreDates.h"
@@ -43,6 +41,7 @@
 - (void) awakeFromNib {
 
     [self showWindow:self];
+    [self.viewer setFrameLoadDelegate:self];
 
 }
 
@@ -57,7 +56,12 @@
 
 - (void)refreshReport:(id)sender {
 
-    [[ThingsDataController sharedDataController] processData];
+    NSManagedObjectContext *parentContext = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [childContext setParentContext:parentContext];
+    [[ThingsDataController sharedDataController] importToDosToContext:childContext];
+//    [[ThingsDataController sharedDataController] processData];
+
 
 
     Report *lastReport = [[NSApp delegate] lastReport];
@@ -67,8 +71,8 @@
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"maturityDate >%@ AND maturityDate < %@", lastReport.closingDate, currentReport.closingDate];
     [request setPredicate:pred];
 
-    NSArray *results = [[[NSApp delegate] managedObjectContext] executeFetchRequest:request error:nil];
-    [currentReport addEntries:[NSSet setWithArray:results]];
+    NSArray *results = [childContext executeFetchRequest:request error:nil];
+//    [currentReport addEntries:[NSSet setWithArray:results]];
 
 
     NSInteger carryOver = lastReport.totalPoints.integerValue;
@@ -77,26 +81,6 @@
 
     currentReport.totalPoints = @(currentReport.subtotal + carryOver + deductions);
     currentReport.deductions = @(deductions);
-
-    // Save screenshot;
-
-    WebFrameView *frameView = self.viewer.mainFrame.frameView;
-    [frameView setAllowsScrolling:NO];
-    NSView <WebDocumentView> *docView = frameView.documentView;
-    NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
-    [frameView setAllowsScrolling:YES];
-
-    NSImage *image = [[NSImage alloc] initWithData:imgData];
-
-
-    [image lockFocus];
-
-    NSBitmapImageRep* bitmapRep = [[NSBitmapImageRep alloc]
-                                   initWithFocusedViewRect:NSMakeRect(0, 0, image.size.width, image.size.height)]
-    ;
-
-    [image unlockFocus];
-    currentReport.pointsReport = [bitmapRep representationUsingType:NSPNGFileType properties:nil];
 
     //TODO: CHANGE DATE STyLE
 
@@ -112,7 +96,7 @@
     @"pointsDeduction" : @(deductions),
     @"date": [df stringFromDate:[NSDate date]],
     @"totalPoints" : currentReport.totalPoints,
-    @"entries": currentReport.entries.allObjects,
+    @"entries": results,
 
     };
 
@@ -126,8 +110,14 @@
     } else {
 
         [[self.viewer mainFrame] loadHTMLString:result baseURL:nil];
+   
+
         
     }
+
+ 
+
+ 
     
     
     
@@ -142,70 +132,40 @@
     if (!self.postWindowController ) {
         self.postWindowController = [DJPostWindowController new];
     }
-    [self.postWindowController showPostWindowSheetWithModalDelegate:self];
 
+    [self.postWindowController showPostSheet:self.window];
 
-
-
-
-//    
-//
-//    void (^action) (void *, NSInteger) = ^(void *context, NSInteger returnCode){
-//
-//            if (returnCode == NSOKButton) {
-//
-//                [self refreshReport:self];
-//
-////#ifdef RELEASE
-//                [self closeBooks]; //WARNING: CLOSING IS IRREVERSIBLE..
-////#endif
-//
-//
-//                NSSharingService *email = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
-//
-//                NSString *format = [NSString stringWithContentsOfURL:[
-//                                                                      [NSBundle mainBundle] URLForResource:@"PostFormat" withExtension:@"txt"]
-//                                                            encoding:NSUTF8StringEncoding
-//                                                               error:nil];
-//                [email performWithItems:@[format, self.pointsReport]];
-//
-//                [self refreshReport:self];
-//
-//            }
-//};
-//
-//    
-//
-//    ESSBeginAlertSheet(
-//                       @"Irreversible Action Warning",
-//                       @"Proceed",
-//                       @"Cancel",
-//                       nil,
-//                       self.window,
-//                       nil,
-//                       action,
-//                       nil,
-//                       @"Please check the Things.app for completed todos which remain unlogged before proceeding.");
 
     
 }
 
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
+
+    WebFrameView *frameView = self.viewer.mainFrame.frameView;
+    [frameView setAllowsScrolling:NO];
+    NSView <WebDocumentView> *docView = frameView.documentView;
+    NSData *imgData = [docView dataWithPDFInsideRect:docView.bounds];
+    [frameView setAllowsScrolling:YES];
+
+    NSImage *image = [[NSImage alloc] initWithData:imgData];
 
 
-- (void) closeBooks {
+    [image lockFocus];
+
+    NSBitmapImageRep* bitmapRep = [[NSBitmapImageRep alloc]
+                                   initWithFocusedViewRect:NSMakeRect(0, 0, image.size.width, image.size.height)];
+
+    [image unlockFocus];
+
+    Report *currentReport = [[NSApp delegate] currentReport];
+
+    currentReport.pointsReport = [bitmapRep representationUsingType:NSPNGFileType properties:nil];
+
+};
 
 
-    //be sure to refresh!
-    [[NSApp delegate] saveAction:self];
 
 
-
-}
-
-- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void * )contextInfo {
-
-    NSLog(@"sheet ends");
-}
 
 
 @end

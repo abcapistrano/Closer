@@ -9,9 +9,8 @@
 #import "DJPostWindowController.h"
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
-#import "Constants.h"
-#import "OverviewWindowController.h"
-
+#import "Report+AdditionalMethods.h"
+#import "DJAppDelegate.h"
 NSString * const API_KEY = @"412976472118083";
 
 @interface DJPostWindowController ()
@@ -25,17 +24,25 @@ NSString * const API_KEY = @"412976472118083";
     return self;
 }
 
-- (void) showPostWindowSheetWithModalDelegate: (id) delegate {
+- (void) showPostSheet: (NSWindow *) parentWindow  {
 
+    NSString *format = [NSString stringWithContentsOfURL:[ [NSBundle mainBundle] URLForResource:@"PostFormat" withExtension:@"txt"]
+                                                encoding:NSUTF8StringEncoding
+                                                   error:nil];
 
-    self.overviewWindowController = delegate;
+    Report *report = [[NSApp delegate] currentReport];
+    report.message = format;
 
+    
     [NSApp beginSheet:self.window
-       modalForWindow:self.overviewWindowController.window
-        modalDelegate:self.overviewWindowController
+       modalForWindow:parentWindow
+        modalDelegate:self
        didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
           contextInfo:nil];
 
+ 
+
+    
 
     [self askForPermissions];
 
@@ -115,45 +122,59 @@ NSString * const API_KEY = @"412976472118083";
 }
 - (IBAction)post:(id)sender; {
 
-//    NSData *data = self.overviewWindowController.pointsReportImageData;
-//  //  NSDictionary *parameters = @{@"message": @"test message", @"picture": data };
-//
-//
-////
-////    NSURL *url = [NSURL fileURLWithPath:@"/Users/earltagra/Desktop/Screen Shot 2013-01-25 at 7.33.01 PM.png"];
-////    NSData *data = [NSData dataWithContentsOfURL:url];
-////
-//    NSDictionary *parameters = @{
-//    @"message": [[NSUserDefaults standardUserDefaults] objectForKey:@"message"]};
-//
-//
-//    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/302868049811330/photos"];
-//
-//    SLRequest *feedRequest = [SLRequest
-//                              requestForServiceType:SLServiceTypeFacebook
-//                              requestMethod:SLRequestMethodPOST
-//                              URL:feedURL
-//                              parameters:parameters];
-//    feedRequest.account = self.facebookAccount;
-//
-//    [feedRequest addMultipartData: data
-//                         withName:@"source"
-//                             type:@"multipart/form-data"
-//                         filename:@"TestImage"];
-//
-//    [feedRequest performRequestWithHandler:^(NSData *responseData,
-//                                             NSHTTPURLResponse *urlResponse, NSError *error)
-//     {
-//
-//
-//         NSLog(@"%@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-//
-//         // Handle response
-//     }];
-//
+    Report *report = [[NSApp delegate] currentReport];
+    
+    NSDictionary *parameters = @{@"message": report.message};
+    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/302868049811330/photos"];
 
-  //  [NSApp endSheet:self.window returnCode:NSOKButton];
-  //  [self.window orderOut:self];
+    SLRequest *feedRequest = [SLRequest
+                              requestForServiceType:SLServiceTypeFacebook
+                              requestMethod:SLRequestMethodPOST
+                              URL:feedURL
+                              parameters:parameters];
+    feedRequest.account = self.facebookAccount;
+
+    NSString *fileName = [[[NSUUID UUID] UUIDString] stringByAppendingPathExtension:@"png"];
+    [feedRequest addMultipartData: report.pointsReport
+                         withName:@"source"
+                             type:@"multipart/form-data"
+                         filename:fileName];
+    self.permissionGranted = NO;
+
+    [feedRequest performRequestWithHandler:^(NSData *responseData,
+                                             NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+
+         if (responseDictionary[@"id"] != nil) {
+
+
+             
+             [NSApp endSheet:self.window returnCode:NSOKButton];
+             [self.window orderOut:self];
+
+             
+         } else {
+
+            self.permissionGranted = YES;
+
+         }
+
+     }];
+
+
+
+}
+
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void * )contextInfo {
+
+    if (returnCode == NSOKButton) {
+
+        // refresh!
+        [[NSApp delegate] saveAction:self];
+
+        
+    }
 }
 
 @end

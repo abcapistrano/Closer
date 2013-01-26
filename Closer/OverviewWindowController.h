@@ -7,11 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <WebKit/WebKit.h>
+
 @class WebView;
 @class DJPostWindowController;
 @class Report;
 
-@interface OverviewWindowController : NSWindowController
+@interface OverviewWindowController : NSWindowController 
 @property (assign) IBOutlet WebView *viewer;
 @property (nonatomic, strong) DJPostWindowController *postWindowController;
 

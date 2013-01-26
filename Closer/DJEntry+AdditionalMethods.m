@@ -9,6 +9,8 @@
 #import "DJEntry+AdditionalMethods.h"
 
 @implementation DJEntry (AdditionalMethods)
+
+//TOOD: DEPRECATE
 + (DJEntry *) entryWithDefaultContext {
 
     return [NSEntityDescription insertNewObjectForEntityForName:@"Entry"

@@ -13,6 +13,9 @@
 
 @interface ThingsDataController : NSObject
 @property (strong) ThingsApplication *things;
+@property (strong) NSMutableSet *addedEntries;
+@property (nonatomic, readonly) NSUndoManager *undoManager;
 + (id)sharedDataController;
-- (void) processData;
+- (void) importToDosToContext: (NSManagedObjectContext *) context;
+
 @end

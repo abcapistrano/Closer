@@ -10,15 +10,14 @@
 
 @class ACAccountStore;
 @class ACAccount;
-@class OverviewWindowController;
+@class Report;
 @interface DJPostWindowController : NSWindowController
 @property (strong) ACAccountStore *accountStore;
 @property (strong) ACAccount *facebookAccount;
 @property (assign) BOOL permissionGranted;
 
-@property (weak) OverviewWindowController *overviewWindowController;
-
 - (IBAction)closeWindow:(id)sender;
 - (IBAction)post:(id)sender;
-- (void) showPostWindowSheetWithModalDelegate: (id) delegate;
+- (void) showPostSheet: (NSWindow *) parentWindow;
+
 @end

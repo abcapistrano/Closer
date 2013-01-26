@@ -73,7 +73,6 @@
 		FD601EC0167F759E008DDBF0 /* Things.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Things.h; sourceTree = "<group>"; };
 		FD72D75C16AAEC4E00F57B12 /* ThingsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThingsDataController.h; path = ../ThingsDataController.h; sourceTree = "<group>"; };
 		FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThingsDataController.m; path = ../ThingsDataController.m; sourceTree = "<group>"; };
-		FD72D76516AB080300F57B12 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		FD72D77316ABC7D800F57B12 /* PostFormat.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostFormat.txt; sourceTree = "<group>"; };
 		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
 		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
@@ -303,7 +302,6 @@
 		FDED2AE81678C90E00BC416C /* Closer */ = {
 			isa = PBXGroup;
 			children = (
-				FD72D76516AB080300F57B12 /* Constants.h */,
 				FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */,
 				FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */,
 				FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */,

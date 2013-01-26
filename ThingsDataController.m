@@ -11,7 +11,6 @@
 #import "Things.h"
 #import "DJEntry+AdditionalMethods.h"
 #import "DJAppDelegate.h"
-#include "Constants.h"
 #import "MTRandom.h"
 #import "NSString+GenericString.h"
 #import "Report+AdditionalMethods.h"
@@ -43,20 +42,27 @@
 
 
         self.things = [SBApplication applicationWithBundleIdentifier:@"com.culturedcode.Things"];
-        
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(clearAddedEntries:)
+                                                      name:NSManagedObjectContextDidSaveNotification
+                                                   object:[[NSApp delegate] managedObjectContext]];
 
 
     }
-    
+
     return self;
 }
 
-// contains a single method for now. in the future may be expanded.
-- (void) processData {
 
-    [self processLoggedToDos];
-    
-}
+
+// contains a single method for now. in the future may be expanded.
+//- (void) processData {
+//
+//    [self discardEntries];
+//    [self processLoggedToDos];
+//    
+//}
 
 
 /*
@@ -66,9 +72,17 @@ Goes over each todo/project in the logbook which has points so that the correspo
  
 */
 
-- (void) processLoggedToDos {
+- (NSUndoManager *) undoManager {
 
-    [[[NSApp delegate] managedObjectContext] rollback];
+    return [[[NSApp delegate] managedObjectContext] undoManager];
+}
+
+
+- (void) importToDosToContext: (NSManagedObjectContext *) context{
+
+//    NSManagedObjectContext *temporary = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
+//    [temporary setParentContext:[[NSApp delegate] managedObjectContext]];
+
 
     ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
     SBElementArray *toDos = logbook.toDos;
@@ -85,10 +99,6 @@ Goes over each todo/project in the logbook which has points so that the correspo
 
 
     MTRandom *randomizer = [[MTRandom alloc] init];
-
-    
-
-
     [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
 
         if (toDo.status == ThingsStatusCompleted) {
@@ -101,7 +111,7 @@ Goes over each todo/project in the logbook which has points so that the correspo
                 NSInteger rawPoints = [[toDoName substringWithRange:pointRange] integerValue];
 
 
-                DJEntry *entry = [DJEntry entryWithDefaultContext];
+                DJEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:@"Entry" inManagedObjectContext:context];
                 NSRange nameRange = NSMakeRange(0, pointRange.location-1);
 
                 entry.name = [toDoName substringWithRange:nameRange];
@@ -156,6 +166,8 @@ Goes over each todo/project in the logbook which has points so that the correspo
                     entry.maturityDate = maturityDate;
                     
                 }
+
+
             }
 
                        
@@ -164,11 +176,13 @@ Goes over each todo/project in the logbook which has points so that the correspo
     }];
 
 
+//    [context performBlockAndWait:^{
+//        NSError *error;
+//        BOOL success = [context save:&error];
+//        NSLog(@"success: %d", success);
+//    }];
 
 }
-
-
-
 
 
 

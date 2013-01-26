@@ -15,8 +15,6 @@
     [super awakeFromInsert];
     self.closingDate = [[NSDate date] dateJustBeforeMidnight];
 
-
-
 }
 
 - (NSInteger) subtotal {
@@ -32,5 +30,7 @@
     return [(DJEntry*)[entries lastObject] completionDate];
 
 }
+
+
 
 @end
