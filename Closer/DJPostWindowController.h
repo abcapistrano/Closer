@@ -14,7 +14,8 @@
 @interface DJPostWindowController : NSWindowController
 @property (strong) ACAccountStore *accountStore;
 @property (strong) ACAccount *facebookAccount;
-@property (assign) BOOL permissionGranted;
+@property (assign) BOOL postingAllowed;
+@property (strong) NSURL *reportTextFile;
 
 - (IBAction)closeWindow:(id)sender;
 - (IBAction)post:(id)sender;

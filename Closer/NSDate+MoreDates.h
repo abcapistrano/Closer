@@ -27,5 +27,6 @@
 - (NSDate *) yesterday;
 - (NSInteger)year;
 - (NSInteger) daysSinceDate: (NSDate *) pastDate;
-
+- (NSString *)dateStringWithStyle:(NSDateFormatterStyle)style;
+- (NSString *)dateStringWithFormat: (NSString *) format;
 @end

@@ -14,7 +14,7 @@
 		FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */; };
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
 		FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */; };
-		FD72D77416ABC7D800F57B12 /* PostFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = FD72D77316ABC7D800F57B12 /* PostFormat.txt */; };
+		FD72D77416ABC7D800F57B12 /* PostTemplate.md in Resources */ = {isa = PBXBuildFile; fileRef = FD72D77316ABC7D800F57B12 /* PostTemplate.md */; };
 		FD7C77E3168358800004030C /* NSApplication+ESSApplicationCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		FD7C77E8168386FC0004030C /* Icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FD7C77E7168386FC0004030C /* Icon.iconset */; };
 		FD861EC916B2AB500037E760 /* DJPostWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD861EC716B2AB500037E760 /* DJPostWindowController.m */; };
@@ -73,7 +73,7 @@
 		FD601EC0167F759E008DDBF0 /* Things.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Things.h; sourceTree = "<group>"; };
 		FD72D75C16AAEC4E00F57B12 /* ThingsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThingsDataController.h; path = ../ThingsDataController.h; sourceTree = "<group>"; };
 		FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThingsDataController.m; path = ../ThingsDataController.m; sourceTree = "<group>"; };
-		FD72D77316ABC7D800F57B12 /* PostFormat.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostFormat.txt; sourceTree = "<group>"; };
+		FD72D77316ABC7D800F57B12 /* PostTemplate.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostTemplate.md; sourceTree = "<group>"; };
 		FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSApplication+ESSApplicationCategory.h"; sourceTree = "<group>"; };
 		FD7C77E2168358650004030C /* NSApplication+ESSApplicationCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+ESSApplicationCategory.m"; sourceTree = "<group>"; };
 		FD7C77E7168386FC0004030C /* Icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Icon.iconset; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		FD861ED116B362A00037E760 /* DJEntry+AdditionalMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DJEntry+AdditionalMethods.m"; sourceTree = "<group>"; };
 		FD861EE816B369170037E760 /* DJEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJEntry.h; sourceTree = "<group>"; };
 		FD861EE916B369170037E760 /* DJEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJEntry.m; sourceTree = "<group>"; };
-		FD861EEB16B369560037E760 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
+		FD861EEB16B369560037E760 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		FD861EEC16B3709D0037E760 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
 		FD861EED16B3709D0037E760 /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
 		FD861EEF16B370D90037E760 /* Report+AdditionalMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Report+AdditionalMethods.h"; sourceTree = "<group>"; };
@@ -334,7 +334,7 @@
 		FDED2AE91678C90E00BC416C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FD72D77316ABC7D800F57B12 /* PostFormat.txt */,
+				FD72D77316ABC7D800F57B12 /* PostTemplate.md */,
 				FD7C77E7168386FC0004030C /* Icon.iconset */,
 				FD459799168F409900D820DC /* Rules Format.mustache */,
 				FDE60EC21680B7C800AE8703 /* Points Format.mustache */,
@@ -407,7 +407,7 @@
 				FD7C77E8168386FC0004030C /* Icon.iconset in Resources */,
 				FD45979A168F409900D820DC /* Rules Format.mustache in Resources */,
 				FD95076C16AADCAA00092963 /* OverviewWindowController.xib in Resources */,
-				FD72D77416ABC7D800F57B12 /* PostFormat.txt in Resources */,
+				FD72D77416ABC7D800F57B12 /* PostTemplate.md in Resources */,
 				FD861ECA16B2AB500037E760 /* PostWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

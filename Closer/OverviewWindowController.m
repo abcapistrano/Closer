@@ -83,19 +83,11 @@
     currentReport.totalPoints = @(currentReport.subtotal + carryOver + deductions);
     currentReport.deductions = @(deductions);
 
-    //TODO: CHANGE DATE STyLE
-
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateStyle:NSDateFormatterShortStyle];
-    [df setTimeStyle:NSDateFormatterShortStyle];
-
-
 
     //TODO: UPDATE GR MUSTACHE TO REFER TO THE CURRENT REPORT OBJECT
     NSDictionary *data = @{
     @"pointsCarryover" : @(carryOver),
     @"pointsDeduction" : @(deductions),
-    @"date": [df stringFromDate:[NSDate date]],
     @"totalPoints" : currentReport.totalPoints,
     @"entries": results,
 

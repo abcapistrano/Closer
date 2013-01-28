@@ -11,6 +11,7 @@
 #import <Accounts/Accounts.h>
 #import "Report+AdditionalMethods.h"
 #import "DJAppDelegate.h"
+#import "NSDate+MoreDates.h"
 NSString * const API_KEY = @"412976472118083";
 
 @interface DJPostWindowController ()
@@ -25,14 +26,6 @@ NSString * const API_KEY = @"412976472118083";
 }
 
 - (void) showPostSheet: (NSWindow *) parentWindow  {
-
-    NSString *format = [NSString stringWithContentsOfURL:[ [NSBundle mainBundle] URLForResource:@"PostFormat" withExtension:@"txt"]
-                                                encoding:NSUTF8StringEncoding
-                                                   error:nil];
-
-    Report *report = [[NSApp delegate] currentReport];
-    report.message = format;
-
     
     [NSApp beginSheet:self.window
        modalForWindow:parentWindow
@@ -42,11 +35,20 @@ NSString * const API_KEY = @"412976472118083";
 
  
 
-    
+    NSString *temporaryDirectory = NSTemporaryDirectory();
+    NSString *name = [[[NSDate date] dateStringWithFormat:@"EEE, yyyy-MMM-dd"] stringByAppendingPathExtension:@"md"];
+    self.reportTextFile = [NSURL fileURLWithPathComponents:@[temporaryDirectory, name ]];
+
+    NSURL *template =[[NSBundle mainBundle] URLForResource:@"PostTemplate" withExtension:@"md"];
+    [[NSFileManager defaultManager] copyItemAtURL:template toURL:self.reportTextFile error:nil];
+
+    [[NSWorkspace sharedWorkspace] openURL:self.reportTextFile];
+
 
     [self askForPermissions];
 
 }
+
 
 - (void) askForPermissions {
 
@@ -77,7 +79,7 @@ NSString * const API_KEY = @"412976472118083";
 
             [self.accountStore requestAccessToAccountsWithType:facebookAccountType options:dict completion:^(BOOL granted, NSError *error) {
                 if(granted && error == nil) {
-                    self.permissionGranted = YES;
+                    self.postingAllowed = YES;
                 }  else {
 
                     NSAlert *a = [NSAlert alertWithError:error];
@@ -121,9 +123,14 @@ NSString * const API_KEY = @"412976472118083";
 
 }
 - (IBAction)post:(id)sender; {
-
+    NSString *message = [NSString stringWithContentsOfURL:self.reportTextFile
+                                                 encoding:NSUTF8StringEncoding
+                                                    error:nil];
     Report *report = [[NSApp delegate] currentReport];
-    
+    report.message = message;
+    [[NSFileManager defaultManager] trashItemAtURL:self.reportTextFile resultingItemURL:nil error:nil];
+
+
     NSDictionary *parameters = @{@"message": report.message};
     NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/302868049811330/photos"];
 
@@ -139,7 +146,7 @@ NSString * const API_KEY = @"412976472118083";
                          withName:@"source"
                              type:@"multipart/form-data"
                          filename:fileName];
-    self.permissionGranted = NO;
+    self.postingAllowed = NO;
 
     [feedRequest performRequestWithHandler:^(NSData *responseData,
                                              NSHTTPURLResponse *urlResponse, NSError *error)
@@ -156,7 +163,7 @@ NSString * const API_KEY = @"412976472118083";
              
          } else {
 
-            self.permissionGranted = YES;
+            self.postingAllowed = YES;
 
          }
 
@@ -173,6 +180,8 @@ NSString * const API_KEY = @"412976472118083";
         DJAppDelegate *delegate = (DJAppDelegate *) [NSApp delegate];
         [delegate saveAction:self];
 
+        NSURL *group = [NSURL URLWithString:@"http://facebook.com/groups/accountabilitybuddies7/"];
+        [[NSWorkspace sharedWorkspace] openURL:group];
         
     }
 }

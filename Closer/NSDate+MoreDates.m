@@ -9,6 +9,7 @@
 #import "NSDate+MoreDates.h"
 
 
+
 @implementation NSDate (MoreDates)
 
 - (NSDate *) dateAtDawn {
@@ -120,6 +121,25 @@
     return [difference day];
     
     
+}
+
+- (NSString *)dateStringWithStyle:(NSDateFormatterStyle)style
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:style];
+    return [dateFormatter stringFromDate:self];
+}
+
+- (NSString *)dateStringWithFormat: (NSString *) format {
+/*
+ see: http://www.cocoawithlove.com/2009/05/simple-methods-for-date-formatting-and.html and http://unicode.org/reports/tr35/tr35-4.html#Date_Format_Patterns for formats
+ 
+ */
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [dateFormatter setDateFormat:format];
+   return [dateFormatter stringFromDate:self];
 }
 
 
