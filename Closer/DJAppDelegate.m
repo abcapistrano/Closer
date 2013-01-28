@@ -12,7 +12,8 @@
 #import "NSApplication+SheetsAndBlocks.h"
 #import "OverviewWindowController.h"
 #import "Report+AdditionalMethods.h"
-
+#import "NSDate+MoreDates.h"
+#import "DJEntry+AdditionalMethods.h"
 @implementation DJAppDelegate
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
@@ -179,11 +180,91 @@
         [defaults setBool:YES forKey:transitionKey];
     }
 
+
+
+    //delete our report
+
+/* DO NOT DELETE:
+
+ USe the procedure below so that you can delete spurious entries
+ 
+
+    NSFetchRequest *r = [[NSFetchRequest alloc] initWithEntityName:@"Report"];
+    [r setPredicate:[NSPredicate predicateWithFormat:@"closingDate == %@", [[NSDate date] dateJustBeforeMidnight]]];
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:r error:nil];
+
+    for (Report *result in results) {
+
+        [self.managedObjectContext deleteObject:result];
+        [result.entries enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            [self.managedObjectContext deleteObject:obj];
+        }];
+    }
+
+    NSFetchRequest *e = [[NSFetchRequest alloc] initWithEntityName:@"Entries"];
+    NSDate *date = [[[NSDate date] yesterday] dateJustBeforeMidnight];
+    [e setPredicate:
+     [NSPredicate predicateWithFormat:@"completionDate > %@",date]];
+
+    results = [self.managedObjectContext executeFetchRequest:r error:nil];
+
+    for (DJEntry *result in results) {
+        NSLog(@"%@", result.name);
+
+        [self.managedObjectContext deleteObject:result];
+    }
+    [self saveAction:self];
+ */
+
     [self.overviewWindowController refreshReport:self];
 
 
 
 }
+
+- (NSManagedObject *)objectWithURI:(NSURL *)uri
+{
+    NSManagedObjectID *objectID =
+    [[self persistentStoreCoordinator]
+     managedObjectIDForURIRepresentation:uri];
+
+    if (!objectID)
+    {
+        return nil;
+    }
+
+    NSManagedObject *objectForID = [self.managedObjectContext objectWithID:objectID];
+    if (![objectForID isFault])
+    {
+        return objectForID;
+    }
+
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[objectID entity]];
+
+    // Equivalent to
+    // predicate = [NSPredicate predicateWithFormat:@"SELF = %@", objectForID];
+    NSPredicate *predicate =
+    [NSComparisonPredicate
+     predicateWithLeftExpression:
+     [NSExpression expressionForEvaluatedObject]
+     rightExpression:
+     [NSExpression expressionForConstantValue:objectForID]
+     modifier:NSDirectPredicateModifier
+     type:NSEqualToPredicateOperatorType
+     options:0];
+    [request setPredicate:predicate];
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    if ([results count] > 0 )
+    {
+        return [results objectAtIndex:0];
+    }
+
+    return nil;
+}
+
 
 
 - (Report *) lastReport {
