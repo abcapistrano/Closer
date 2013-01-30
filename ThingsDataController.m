@@ -84,18 +84,18 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
     SBElementArray *toDos = logbook.toDos;
 
     Report *lastReport = [[NSApp delegate] lastReport];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate > %@",  lastReport.lastEntryDate];
-    [toDos filterUsingPredicate:pred];
-    NSArray *filteredTodos = [toDos get];
+    NSPredicate *completionDatePredicate = [NSPredicate predicateWithFormat:@"completionDate > %@",  lastReport.lastEntryDate];
+    [toDos filterUsingPredicate:completionDatePredicate];
+    NSArray *filteredTodos = [[toDos get] mutableCopy];
 
     // Iterate over the todos
 
     NSRegularExpression *exp = [[NSRegularExpression alloc] initWithPattern:@"^.+\\. ([-+]?\\d+)$" options:0
                                                                       error:NULL];
 
-
     MTRandom *randomizer = [[MTRandom alloc] init];
-    [filteredTodos enumerateObjectsUsingBlock:^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
+
+    void (^inspectToDos)(ThingsToDo *, NSUInteger, BOOL *) = ^(ThingsToDo* toDo, NSUInteger idx, BOOL *stop) {
 
         if (toDo.status == ThingsStatusCompleted) {
             NSString *toDoName = toDo.name;
@@ -116,11 +116,11 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 entry.completionDate = toDo.completionDate;
 
 
-                
+
                 // if the entry is a routine or school work..it matures immediately
                 NSString *area = toDo.area.name;
                 if (!area) area = toDo.project.area.name;
-                
+
 
 
                 if ([toDo.tagNames containsSubstring:@"routine"]) {
@@ -145,7 +145,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                     entry.maturityDate = toDo.completionDate;
 
 
-              
+
                 } else {
 
 
@@ -162,18 +162,40 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                     entry.maturityDate = maturityDate;
                     
                 }
-
-                [addedEntries addObject:entry];
                 
+                
+                [addedEntries addObject:entry];
 
 
+
+                
+                
             }
-
-                       
+            
+            
         }
-         
+        
+    };
+
+
+    [filteredTodos enumerateObjectsUsingBlock:inspectToDos];
+    
+    // if the entry is a project we should inspect the todos inside
+    NSMutableArray *todosHidingInsideProjects = [NSMutableArray array];
+    NSArray *completedProjects = [self.things.projects filteredArrayUsingPredicate:completionDatePredicate];
+    [completedProjects enumerateObjectsUsingBlock:^(ThingsProject* project, NSUInteger idx, BOOL *stop) {
+        SBElementArray *todos = [project toDos];
+        [todos filterUsingPredicate:completionDatePredicate];
+        NSArray *local = [todos get];
+        [todosHidingInsideProjects addObjectsFromArray:local];
+        
+
+
+
+
     }];
 
+    [todosHidingInsideProjects enumerateObjectsUsingBlock:inspectToDos];
     [self.cache setObject:addedEntries forKey:ADDED_ENTRIES_KEY];
 
 }
