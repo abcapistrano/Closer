@@ -14,6 +14,7 @@
 #import "MTRandom.h"
 #import "NSString+GenericString.h"
 #import "Report+AdditionalMethods.h"
+#import "NSDate+MoreDates.h"
 
 
 NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
@@ -47,6 +48,34 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         self.things = [SBApplication applicationWithBundleIdentifier:@"com.culturedcode.Things"];
         self.cache = [NSCache new];
         self.cache.name = @"Cache";
+
+
+        void (^clearLogbookAndTrash)(NSNotification *) = ^(NSNotification * note) {
+
+            
+            // delete entries which are more than a month old
+
+            NSDate *aMonthAgo = [[NSDate date] dateByOffsettingMonths:-1];;
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate < %@", aMonthAgo];
+
+            ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
+            SBElementArray *toDos = logbook.toDos;
+            [toDos filterUsingPredicate:pred];
+
+            NSLog(@"%@", [toDos valueForKey:@"name"]);
+            [toDos arrayByApplyingSelector:@selector(delete)];
+
+            [self.things emptyTrash];
+
+
+        };
+
+        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
+                                                          object:nil
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:clearLogbookAndTrash];
+
+        
        
 
     }
@@ -177,27 +206,29 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         
     };
 
-
-    [filteredTodos enumerateObjectsUsingBlock:inspectToDos];
+    [filteredTodos enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:inspectToDos];
     
     // if the entry is a project we should inspect the todos inside
     NSMutableArray *todosHidingInsideProjects = [NSMutableArray array];
+
     NSArray *completedProjects = [self.things.projects filteredArrayUsingPredicate:completionDatePredicate];
-    [completedProjects enumerateObjectsUsingBlock:^(ThingsProject* project, NSUInteger idx, BOOL *stop) {
+    [completedProjects enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(ThingsProject* project, NSUInteger idx, BOOL *stop) {
         SBElementArray *todos = [project toDos];
         [todos filterUsingPredicate:completionDatePredicate];
         NSArray *local = [todos get];
         [todosHidingInsideProjects addObjectsFromArray:local];
-        
-
-
-
+        NSLog(@"%@",project.name);
 
     }];
+    [todosHidingInsideProjects enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:inspectToDos];
 
-    [todosHidingInsideProjects enumerateObjectsUsingBlock:inspectToDos];
     [self.cache setObject:addedEntries forKey:ADDED_ENTRIES_KEY];
 
+}
+
+- (void) dealloc {
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
 }
 
 
