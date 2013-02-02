@@ -14,7 +14,6 @@
 @interface ThingsDataController : NSObject
 @property (strong) ThingsApplication *things;
 @property (strong) NSMutableSet *addedEntries;
-@property (nonatomic, readonly) NSUndoManager *undoManager;
 @property (strong) NSCache *cache;
 @property (strong) id observer;
 + (id)sharedDataController;

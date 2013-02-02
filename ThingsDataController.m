@@ -84,11 +84,6 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 }
 
 
-- (NSUndoManager *) undoManager {
-
-    return [[[NSApp delegate] managedObjectContext] undoManager];
-}
-
 - (void) discardEntries {
 
     NSMutableSet *entriesAdded = [self.cache objectForKey:ADDED_ENTRIES_KEY];
