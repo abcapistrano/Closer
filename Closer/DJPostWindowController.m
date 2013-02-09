@@ -158,26 +158,26 @@ NSString * const API_KEY = @"412976472118083";
 //                         filename:fileName];
     self.postingAllowed = NO;
 
-//    [feedRequest performRequestWithHandler:^(NSData *responseData,
-//                                             NSHTTPURLResponse *urlResponse, NSError *error)
-//     {
-//         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-//
-//         if (responseDictionary[@"id"] != nil) {
-//
-//
-//             
-//             [NSApp endSheet:self.window returnCode:NSOKButton];
-//             [self.window orderOut:self];
-//
-//             
-//         } else {
-//
-//            self.postingAllowed = YES;
-//
-//         }
-//
-//     }];
+    [feedRequest performRequestWithHandler:^(NSData *responseData,
+                                             NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+
+         if (responseDictionary[@"id"] != nil) {
+
+
+             
+             [NSApp endSheet:self.window returnCode:NSOKButton];
+             [self.window orderOut:self];
+
+             
+         } else {
+
+            self.postingAllowed = YES;
+
+         }
+
+     }];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Report Posted"
                                                         object:report
