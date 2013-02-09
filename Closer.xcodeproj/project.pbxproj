@@ -12,6 +12,10 @@
 		FD2A3EA116AEF724004E1448 /* NSDate+MoreDates.m in Sources */ = {isa = PBXBuildFile; fileRef = FD2A3E9F16AEF724004E1448 /* NSDate+MoreDates.m */; };
 		FD45979A168F409900D820DC /* Rules Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FD459799168F409900D820DC /* Rules Format.mustache */; };
 		FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */; };
+		FD4FBF6D16C6042500E549DE /* libYACYAML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4FBF6616C603DD00E549DE /* libYACYAML.a */; };
+		FD4FBF6E16C6042500E549DE /* libYAML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4FBF6A16C603DD00E549DE /* libYAML.a */; };
+		FD4FBF7016C6044D00E549DE /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4FBF6F16C6044D00E549DE /* libresolv.dylib */; };
+		FD4FBF7216C6089100E549DE /* Prizes.yaml in Resources */ = {isa = PBXBuildFile; fileRef = FD4FBF7116C6089100E549DE /* Prizes.yaml */; };
 		FD601EBE167F7574008DDBF0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */; };
 		FD72D75E16AAEC4E00F57B12 /* ThingsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD72D75D16AAEC4E00F57B12 /* ThingsDataController.m */; };
 		FD72D77416ABC7D800F57B12 /* PostTemplate.md in Resources */ = {isa = PBXBuildFile; fileRef = FD72D77316ABC7D800F57B12 /* PostTemplate.md */; };
@@ -59,6 +63,37 @@
 		FDED2AF91678C90F00BC416C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDED2AF71678C90F00BC416C /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FD4FBF6516C603DD00E549DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DDC030E156541F8001832F5;
+			remoteInfo = YACYAML;
+		};
+		FD4FBF6716C603DD00E549DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DDC031E156541F8001832F5;
+			remoteInfo = YACYAMLTests;
+		};
+		FD4FBF6916C603DD00E549DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DE3E3AC15654430006663D2;
+			remoteInfo = libYAML;
+		};
+		FD4FBF6B16C6040600E549DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DDC030D156541F8001832F5;
+			remoteInfo = YACYAML;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		FD1D0C8816ABDE75006B4254 /* MTRandom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTRandom.h; sourceTree = "<group>"; };
 		FD1D0C8916ABDE75006B4254 /* MTRandom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTRandom.m; sourceTree = "<group>"; };
@@ -69,6 +104,9 @@
 		FD459799168F409900D820DC /* Rules Format.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rules Format.mustache"; sourceTree = "<group>"; };
 		FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+SheetsAndBlocks.h"; path = "../NSApplication+SheetsAndBlocks.h"; sourceTree = "<group>"; };
 		FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+SheetsAndBlocks.m"; path = "../NSApplication+SheetsAndBlocks.m"; sourceTree = "<group>"; };
+		FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = YACYAML.xcodeproj; path = YACYAML/YACYAML.xcodeproj; sourceTree = "<group>"; };
+		FD4FBF6F16C6044D00E549DE /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		FD4FBF7116C6089100E549DE /* Prizes.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Prizes.yaml; sourceTree = "<group>"; };
 		FD601EBD167F7574008DDBF0 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		FD601EC0167F759E008DDBF0 /* Things.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Things.h; sourceTree = "<group>"; };
 		FD72D75C16AAEC4E00F57B12 /* ThingsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThingsDataController.h; path = ../ThingsDataController.h; sourceTree = "<group>"; };
@@ -171,6 +209,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD4FBF7016C6044D00E549DE /* libresolv.dylib in Frameworks */,
+				FD4FBF6D16C6042500E549DE /* libYACYAML.a in Frameworks */,
+				FD4FBF6E16C6042500E549DE /* libYAML.a in Frameworks */,
 				FD861ECF16B2B7A40037E760 /* Accounts.framework in Frameworks */,
 				FD861ECD16B2B7A00037E760 /* Social.framework in Frameworks */,
 				FDE60EDD1680C96A00AE8703 /* WebKit.framework in Frameworks */,
@@ -182,6 +223,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FD4FBF6016C603DC00E549DE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD4FBF6616C603DD00E549DE /* libYACYAML.a */,
+				FD4FBF6816C603DD00E549DE /* YACYAMLTests.octest */,
+				FD4FBF6A16C603DD00E549DE /* libYAML.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FD72D76216AAF09E00F57B12 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,6 +313,8 @@
 		FDED2AD31678C90E00BC416C = {
 			isa = PBXGroup;
 			children = (
+				FD4FBF6F16C6044D00E549DE /* libresolv.dylib */,
+				FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */,
 				FD861ECE16B2B7A40037E760 /* Accounts.framework */,
 				FD861ECC16B2B7A00037E760 /* Social.framework */,
 				FDE60EDC1680C96900AE8703 /* WebKit.framework */,
@@ -334,6 +387,7 @@
 		FDED2AE91678C90E00BC416C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FD4FBF7116C6089100E549DE /* Prizes.yaml */,
 				FD72D77316ABC7D800F57B12 /* PostTemplate.md */,
 				FD7C77E7168386FC0004030C /* Icon.iconset */,
 				FD459799168F409900D820DC /* Rules Format.mustache */,
@@ -362,6 +416,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FD4FBF6C16C6040600E549DE /* PBXTargetDependency */,
 			);
 			name = Closer;
 			productName = Closer;
@@ -388,12 +443,42 @@
 			mainGroup = FDED2AD31678C90E00BC416C;
 			productRefGroup = FDED2ADF1678C90E00BC416C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FD4FBF6016C603DC00E549DE /* Products */;
+					ProjectRef = FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				FDED2ADD1678C90E00BC416C /* Closer */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FD4FBF6616C603DD00E549DE /* libYACYAML.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libYACYAML.a;
+			remoteRef = FD4FBF6516C603DD00E549DE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FD4FBF6816C603DD00E549DE /* YACYAMLTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = YACYAMLTests.octest;
+			remoteRef = FD4FBF6716C603DD00E549DE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FD4FBF6A16C603DD00E549DE /* libYAML.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libYAML.a;
+			remoteRef = FD4FBF6916C603DD00E549DE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FDED2ADC1678C90E00BC416C /* Resources */ = {
@@ -409,6 +494,7 @@
 				FD95076C16AADCAA00092963 /* OverviewWindowController.xib in Resources */,
 				FD72D77416ABC7D800F57B12 /* PostTemplate.md in Resources */,
 				FD861ECA16B2AB500037E760 /* PostWindow.xib in Resources */,
+				FD4FBF7216C6089100E549DE /* Prizes.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +561,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD4FBF6C16C6040600E549DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = YACYAML;
+			targetProxy = FD4FBF6B16C6040600E549DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		FDED2AEB1678C90E00BC416C /* InfoPlist.strings */ = {
@@ -563,6 +657,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Closer/Closer-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+				);
 				INFOPLIST_FILE = "Closer/Closer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -576,6 +674,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Closer/Closer-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				HEADER_SEARCH_PATHS = (
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+				);
 				INFOPLIST_FILE = "Closer/Closer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

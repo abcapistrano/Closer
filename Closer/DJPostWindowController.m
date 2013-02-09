@@ -12,6 +12,7 @@
 #import "Report+AdditionalMethods.h"
 #import "DJAppDelegate.h"
 #import "NSDate+MoreDates.h"
+
 NSString * const API_KEY = @"412976472118083";
 
 @interface DJPostWindowController ()
@@ -123,6 +124,9 @@ NSString * const API_KEY = @"412976472118083";
 
 }
 - (IBAction)post:(id)sender; {
+
+    //PHOTO UPLOADING IS DISABLED
+
     NSString *message = [NSString stringWithContentsOfURL:self.reportTextFile
                                                  encoding:NSUTF8StringEncoding
                                                     error:nil];
@@ -132,8 +136,9 @@ NSString * const API_KEY = @"412976472118083";
 
 
     NSDictionary *parameters = @{@"message": report.message};
-    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/302868049811330/photos"];
+//    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/302868049811330/photos"];
 
+    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/302868049811330/feed"];
     SLRequest *feedRequest = [SLRequest
                               requestForServiceType:SLServiceTypeFacebook
                               requestMethod:SLRequestMethodPOST
@@ -141,33 +146,44 @@ NSString * const API_KEY = @"412976472118083";
                               parameters:parameters];
     feedRequest.account = self.facebookAccount;
 
-    NSString *fileName = [[[NSUUID UUID] UUIDString] stringByAppendingPathExtension:@"png"];
-    [feedRequest addMultipartData: report.pointsReport
-                         withName:@"source"
-                             type:@"multipart/form-data"
-                         filename:fileName];
+//    NSString *fileName = [[[NSUUID UUID] UUIDString] stringByAppendingPathExtension:@"png"];
+
+
+    
+//
+//    
+//    [feedRequest addMultipartData: report.pointsReport
+//                         withName:@"source"
+//                             type:@"multipart/form-data"
+//                         filename:fileName];
     self.postingAllowed = NO;
 
-    [feedRequest performRequestWithHandler:^(NSData *responseData,
-                                             NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+//    [feedRequest performRequestWithHandler:^(NSData *responseData,
+//                                             NSHTTPURLResponse *urlResponse, NSError *error)
+//     {
+//         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+//
+//         if (responseDictionary[@"id"] != nil) {
+//
+//
+//             
+//             [NSApp endSheet:self.window returnCode:NSOKButton];
+//             [self.window orderOut:self];
+//
+//             
+//         } else {
+//
+//            self.postingAllowed = YES;
+//
+//         }
+//
+//     }];
 
-         if (responseDictionary[@"id"] != nil) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Report Posted"
+                                                        object:report
+                                                      userInfo:nil];
 
-
-             
-             [NSApp endSheet:self.window returnCode:NSOKButton];
-             [self.window orderOut:self];
-
-             
-         } else {
-
-            self.postingAllowed = YES;
-
-         }
-
-     }];
+    
 
 
 

@@ -15,9 +15,12 @@
 #import "NSString+GenericString.h"
 #import "Report+AdditionalMethods.h"
 #import "NSDate+MoreDates.h"
+#import <YACYAML/YACYAML.h>
+
 
 
 NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
+
 
 @implementation ThingsDataController
 
@@ -62,7 +65,6 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             SBElementArray *toDos = logbook.toDos;
             [toDos filterUsingPredicate:pred];
 
-            NSLog(@"%@", [toDos valueForKey:@"name"]);
             [toDos arrayByApplyingSelector:@selector(delete)];
 
             [self.things emptyTrash];
@@ -70,10 +72,72 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
         };
 
-        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
+        self.applicationQuitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:clearLogbookAndTrash];
+
+        void (^makePrizes)(NSNotification *) = ^(NSNotification *note) {
+
+            Report *report = [note object];
+            NSUInteger prizeCost = 5;
+            NSInteger prizesCount = report.totalPoints.integerValue/prizeCost;
+            
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"Prizes" ofType:@"yaml"];
+            NSDictionary *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:path];
+            NSUInteger availablePrizesCount = [availablePrizes count];
+
+            
+            Class todoClass = [self.things classForScriptingClass:@"to do"];
+            ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
+            SBElementArray *toDos = prizesArea.toDos;
+
+            MTRandom *random = [[MTRandom alloc] init];
+            
+
+
+            for (NSInteger i = 0; i < prizesCount; i++) {
+
+                ThingsToDo *toDo = [todoClass new];
+                [toDos addObject:toDo];
+
+
+                NSUInteger randomNumber = [random randomUInt32From:1 to:(uint32)availablePrizesCount];
+                NSString *prize = [availablePrizes objectForKey:@(randomNumber)];
+
+                toDo.name = [prize valueForKey:@"activityName"];
+                toDo.tagNames = [prize valueForKey:@"tag"];
+                
+                
+
+
+            };
+
+            if (prizesCount > 0) {
+
+
+                ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
+                SBElementArray *loggedToDos = logbook.toDos;
+
+
+                ThingsToDo *toDo = [todoClass new];
+                [loggedToDos addObject:toDo];
+
+                NSUInteger pointsUsed = prizeCost * prizesCount;
+                toDo.name = [NSString stringWithFormat:@"Prize. -%lu", pointsUsed];
+
+                
+            }
+
+
+
+        };
+
+        self.reportsPostedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:@"Report Posted"
+                                                                                       object:nil
+                                                                                        queue:[NSOperationQueue mainQueue]
+                                                                                   usingBlock:makePrizes];
+
 
         
        
@@ -223,7 +287,8 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
 - (void) dealloc {
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationQuitObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.reportsPostedObserver];
 }
 
 

@@ -15,7 +15,8 @@
 @property (strong) ThingsApplication *things;
 @property (strong) NSMutableSet *addedEntries;
 @property (strong) NSCache *cache;
-@property (strong) id observer;
+@property (strong) id applicationQuitObserver;
+@property (strong) id reportsPostedObserver;
 + (id)sharedDataController;
 - (void) importToDos;
 @end
