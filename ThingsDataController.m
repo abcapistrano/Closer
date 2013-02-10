@@ -210,8 +210,8 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 if (!area) area = toDo.project.area.name;
 
 
-
-                if ([toDo.tagNames containsSubstring:@"routine"]) {
+                //bonuses and routines are realized immediately
+                if ([toDo.tagNames containsSubstring:@"routine"] || [toDo.tagNames containsSubstring:@"bonus"]) {
 
                     entry.maturityDate = toDo.completionDate;
                     entry.points = @(rawPoints);
