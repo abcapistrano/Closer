@@ -23,7 +23,7 @@
   activityName: Download a book to put.io/torrent it.
   tag: download
 9:
-  activityName: Download a music album to put.io/torrent it.
+  activityName: Download a music album or a discography to put.io/torrent it.
   tag: download
 10:
   activityName: Read an item from the Things reading list which refers to an online document.
@@ -35,8 +35,11 @@
   activityName: Download a porn movie (just one) to put.io/torrent it.
   tag: download
 13:
-  activityName: Fap to a post in reddit.
+  activityName: One session of fapping to things posted online.
   tag: fap
 14:
-  activityName: Fap to images/movie you have downloaded.
+  activityName: One session of fapping to images/movie you have downloaded.
   tag: fap
+15:
+  activityName: Download a TV show or a season to put.io/torrent it.
+  tag: download
