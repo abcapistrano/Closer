@@ -2,7 +2,7 @@
   activityName: Read one chapter of an ebook.
   tag: bookreading
 2:
-  activityName: Read the oldest item (just one) from the Safari reading list.
+  activityName: [MTWThF] Read the oldest item (just one) from the Safari reading list.
   tag: readingList  
 3:
   activityName: Watch a movie of any length.
@@ -17,29 +17,29 @@
   activityName: Watch a TV show of any length.
   tag: tv
 7:
-  activityName: Download a movie to put.io/torrent it.
+  activityName: [MTWThF] Download a movie to put.io/torrent it.
   tag: download
 8:
-  activityName: Download a book to put.io/torrent it.
+  activityName: [MTWThF] Download a book to put.io/torrent it.
   tag: download
 9:
-  activityName: Download a music album or a discography to put.io/torrent it.
+  activityName: [MTWThF] Download a music album or a discography to put.io/torrent it.
   tag: download
 10:
-  activityName: Read an item from the Things reading list which refers to an online document.
+  activityName: [MTWThF] Read an item from the Things reading list which refers to an online document.
   tag: readingList  
 11:
-  activityName: Download 5 sexy images of men for inspiration.
+  activityName: [MTWThF] Download 5 sexy images of men for inspiration.
   tag: download
 12:
-  activityName: Download a porn movie (just one) to put.io/torrent it.
+  activityName: [MTWThF] Download a porn movie (just one) to put.io/torrent it.
   tag: download
 13:
-  activityName: One session of fapping to things posted online.
+  activityName: [MTWThF] One session of fapping to things posted online.
   tag: fap
 14:
   activityName: One session of fapping to images/movie you have downloaded.
   tag: fap
 15:
-  activityName: Download a TV show or a season to put.io/torrent it.
+  activityName: [MTWThF] Download a TV show or a season to put.io/torrent it.
   tag: download
