@@ -69,7 +69,7 @@
     Report *currentReport = [[NSApp delegate] currentReport];
 
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Entry"];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"maturityDate >%@ AND maturityDate < %@", lastReport.closingDate, currentReport.closingDate];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"maturityDate >%@ AND maturityDate < %@", lastReport.lastEntryDate, currentReport.closingDate];
     [request setPredicate:pred];
 
     NSArray *results = [[[NSApp delegate] managedObjectContext] executeFetchRequest:request error:nil];
