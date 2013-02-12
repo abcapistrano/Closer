@@ -80,8 +80,10 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         void (^makePrizes)(NSNotification *) = ^(NSNotification *note) {
 
             Report *report = [note object];
-            NSUInteger prizeCost = 5;
-            NSInteger prizesCount = report.totalPoints.integerValue/prizeCost;
+
+            
+            NSUInteger prizeCost = 5; //2 prizes for every five points
+            NSInteger prizesCount = 2*report.totalPoints.integerValue/prizeCost;
             
             NSString *path = [[NSBundle mainBundle] pathForResource:@"Prizes" ofType:@"yaml"];
             NSDictionary *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:path];
@@ -123,7 +125,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 ThingsToDo *toDo = [todoClass new];
                 [loggedToDos addObject:toDo];
 
-                NSUInteger pointsUsed = prizeCost * prizesCount;
+                NSUInteger pointsUsed = prizeCost * prizesCount/2;
                 toDo.name = [NSString stringWithFormat:@"Prize. -%lu", pointsUsed];
 
                 
