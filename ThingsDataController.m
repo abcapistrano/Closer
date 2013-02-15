@@ -143,7 +143,6 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                                                                                        object:nil
                                                                                         queue:[NSOperationQueue mainQueue]
                                                                                    usingBlock:makePrizes];
-        makePrizes(nil);
 
 
         
