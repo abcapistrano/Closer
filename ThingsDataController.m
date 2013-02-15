@@ -16,6 +16,7 @@
 #import "Report+AdditionalMethods.h"
 #import "NSDate+MoreDates.h"
 #import <YACYAML/YACYAML.h>
+#import "NSArray+ConvenienceMethods.h"
 
 
 
@@ -86,16 +87,11 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             NSInteger prizesCount = 2*report.totalPoints.integerValue/prizeCost;
             
             NSString *path = [[NSBundle mainBundle] pathForResource:@"Prizes" ofType:@"yaml"];
-            NSDictionary *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:path];
-            NSUInteger availablePrizesCount = [availablePrizes count];
-
+            NSArray *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:path];
             
             Class todoClass = [self.things classForScriptingClass:@"to do"];
             ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
-            SBElementArray *toDos = prizesArea.toDos;
-
-            MTRandom *random = [[MTRandom alloc] init];
-            
+            SBElementArray *toDos = prizesArea.toDos;            
 
 
             for (NSInteger i = 0; i < prizesCount; i++) {
@@ -104,8 +100,8 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 [toDos addObject:toDo];
 
 
-                NSUInteger randomNumber = [random randomUInt32From:1 to:(uint32)availablePrizesCount];
-                NSString *prize = [availablePrizes objectForKey:@(randomNumber)];
+                NSDictionary *prize = [[availablePrizes sample:1] lastObject];
+                
 
                 toDo.name = [prize valueForKey:@"activityName"];
                 toDo.tagNames = [prize valueForKey:@"tag"];
@@ -142,10 +138,10 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
 
         
-       
 
     }
 
+    
     return self;
 }
 
