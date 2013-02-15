@@ -85,9 +85,17 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             
             NSUInteger prizeCost = 5; //2 prizes for every five points
             NSInteger prizesCount = 2*report.totalPoints.integerValue/prizeCost;
-            
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"Prizes" ofType:@"yaml"];
-            NSArray *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:path];
+
+            //check if goal card has a prize
+            NSURL* prizesURL = [NSURL fileURLWithPath:@"/Users/earltagra/Dropbox/Goal Card/Prizes.yaml"];
+
+            if (![prizesURL checkResourceIsReachableAndReturnError:nil]) {
+
+                prizesURL = [[NSBundle mainBundle] URLForResource:@"Prizes" withExtension:@"yaml"];
+
+            }
+
+            NSArray *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:[prizesURL path]];
             
             Class todoClass = [self.things classForScriptingClass:@"to do"];
             ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
@@ -135,6 +143,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                                                                                        object:nil
                                                                                         queue:[NSOperationQueue mainQueue]
                                                                                    usingBlock:makePrizes];
+        makePrizes(nil);
 
 
         
