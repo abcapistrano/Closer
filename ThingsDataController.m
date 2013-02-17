@@ -54,10 +54,10 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         self.cache.name = @"Cache";
 
 
-        void (^clearLogbookAndTrash)(NSNotification *) = ^(NSNotification * note) {
+        void (^cleanUp)(NSNotification *) = ^(NSNotification * note) {
 
             
-            // delete entries which are more than a month old
+            // delete entries in the log book which are more than a month old
 
             NSDate *aMonthAgo = [[NSDate date] dateByOffsettingMonths:-1];;
             NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate < %@", aMonthAgo];
@@ -68,7 +68,19 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
             [toDos arrayByApplyingSelector:@selector(delete)];
 
+   
+            // delete overdue prizes
+
+            ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
+            NSPredicate *overDue = [NSPredicate predicateWithFormat:@"status == %@ AND dueDate < %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen], [NSDate date]  ];
+            SBElementArray *overDuePrizes = prizesArea.toDos;
+            [overDuePrizes filterUsingPredicate:overDue];
+            [overDuePrizes arrayByApplyingSelector:@selector(delete)];
+
+            // clear the trash
+
             [self.things emptyTrash];
+
 
 
         };
@@ -76,7 +88,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         self.applicationQuitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:clearLogbookAndTrash];
+                                                      usingBlock:cleanUp];
 
         void (^makePrizes)(NSNotification *) = ^(NSNotification *note) {
 
@@ -113,11 +125,14 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
                 toDo.name = [prize valueForKey:@"activityName"];
                 toDo.tagNames = [prize valueForKey:@"tag"];
+                toDo.dueDate = [[NSDate date] dateByOffsettingDays:7]; //prizes expire in 7 days.
                 
                 
 
 
             };
+
+            // add the prize deduction
 
             if (prizesCount > 0) {
 
