@@ -40,8 +40,18 @@ NSString * const API_KEY = @"412976472118083";
     NSString *name = [[[NSDate date] dateStringWithFormat:@"EEE, yyyy-MMM-dd"] stringByAppendingPathExtension:@"md"];
     self.reportTextFile = [NSURL fileURLWithPathComponents:@[temporaryDirectory, name ]];
 
-    NSURL *template =[[NSBundle mainBundle] URLForResource:@"PostTemplate" withExtension:@"md"];
-    [[NSFileManager defaultManager] copyItemAtURL:template toURL:self.reportTextFile error:nil];
+
+
+    NSString *manifestPath = @"/Users/earltagra/Library/Mobile Documents/74ZAFF46HB~jp~informationarchitects~Writer/Documents/Rules/Manifest - Summary of All Rules.md";
+    NSURL *manifestURL = [NSURL fileURLWithPath:manifestPath];
+
+
+
+    //NSURL *template =[[NSBundle mainBundle] URLForResource:@"PostTemplate" withExtension:@"md"];
+
+
+
+    [[NSFileManager defaultManager] copyItemAtURL:manifestURL toURL:self.reportTextFile error:nil];
 
     [[NSWorkspace sharedWorkspace] openURL:self.reportTextFile];
 
