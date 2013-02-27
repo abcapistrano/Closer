@@ -72,7 +72,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             // delete overdue prizes
 
             ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
-            NSPredicate *overDue = [NSPredicate predicateWithFormat:@"status == %@ AND dueDate < %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen], [NSDate date]  ];
+            NSPredicate *overDue = [NSPredicate predicateWithFormat:@"status == %@ AND dueDate < %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen], [[NSDate date] dateJustBeforeMidnight]  ];
             SBElementArray *overDuePrizes = prizesArea.toDos;
             [overDuePrizes filterUsingPredicate:overDue];
             [overDuePrizes arrayByApplyingSelector:@selector(delete)];
