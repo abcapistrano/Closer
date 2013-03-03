@@ -106,7 +106,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             }
 
             NSUInteger prizeCost = 3; //1 prize for every three points
-            NSUInteger numberOfPrizesToMake = MIN(maxPrizesCount, report.totalPoints.integerValue/prizeCost);
+            NSUInteger numberOfPrizesToMake = MIN(maxPrizesCount - existingPrizesCount, report.totalPoints.integerValue/prizeCost);
 
             
 
@@ -155,7 +155,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 ThingsToDo *toDo = [todoClass new];
                 [loggedToDos addObject:toDo];
 
-                NSUInteger pointsUsed = prizeCost * numberOfPrizesToMake/2;
+                NSUInteger pointsUsed = prizeCost * numberOfPrizesToMake;
                 toDo.name = [NSString stringWithFormat:@"Prize. -%lu", pointsUsed];
 
                 
