@@ -92,11 +92,23 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
         void (^makePrizes)(NSNotification *) = ^(NSNotification *note) {
 
+            
+
             Report *report = [note object];
 
+            ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
+
+
+            NSUInteger existingPrizesCount = [prizesArea.toDos count];
+            NSUInteger maxPrizesCount = 10;
+            if (existingPrizesCount > maxPrizesCount) {
+                return; // don't make prizes if there is more than 10
+            }
+
+            NSUInteger prizeCost = 3; //1 prize for every three points
+            NSUInteger numberOfPrizesToMake = MIN(maxPrizesCount, report.totalPoints.integerValue/prizeCost);
+
             
-            NSUInteger prizeCost = 5; //2 prizes for every five points
-            NSInteger prizesCount = 2*report.totalPoints.integerValue/prizeCost;
 
             //check if goal card has a prize
             NSURL* prizesURL = [NSURL fileURLWithPath:@"/Users/earltagra/Dropbox/Goal Card/Prizes.yaml"];
@@ -110,11 +122,10 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             NSArray *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:[prizesURL path]];
             
             Class todoClass = [self.things classForScriptingClass:@"to do"];
-            ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
             SBElementArray *toDos = prizesArea.toDos;            
 
 
-            for (NSInteger i = 0; i < prizesCount; i++) {
+            for (NSInteger i = 0; i < numberOfPrizesToMake; i++) {
 
                 ThingsToDo *toDo = [todoClass new];
                 [toDos addObject:toDo];
@@ -134,7 +145,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
             // add the prize deduction
 
-            if (prizesCount > 0) {
+            if (numberOfPrizesToMake > 0) {
 
 
                 ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
@@ -144,7 +155,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 ThingsToDo *toDo = [todoClass new];
                 [loggedToDos addObject:toDo];
 
-                NSUInteger pointsUsed = prizeCost * prizesCount/2;
+                NSUInteger pointsUsed = prizeCost * numberOfPrizesToMake/2;
                 toDo.name = [NSString stringWithFormat:@"Prize. -%lu", pointsUsed];
 
                 
