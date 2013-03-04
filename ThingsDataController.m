@@ -72,7 +72,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             // delete overdue prizes
 
             ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
-            NSPredicate *overDue = [NSPredicate predicateWithFormat:@"status == %@ AND dueDate < %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen], [[NSDate date] yesterday]  ];
+            NSPredicate *overDue = [NSPredicate predicateWithFormat:@"status == %@ AND dueDate < %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen], [NSDate date] ];
             SBElementArray *overDuePrizes = prizesArea.toDos;
             [overDuePrizes filterUsingPredicate:overDue];
             [overDuePrizes arrayByApplyingSelector:@selector(delete)];
@@ -136,7 +136,8 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
                 toDo.name = [prize valueForKey:@"activityName"];
                 toDo.tagNames = [prize valueForKey:@"tag"];
-                toDo.dueDate = [[NSDate date] dateByOffsettingDays:7]; //prizes expire in 7 days.
+                
+                toDo.dueDate = [[[NSDate date] dateByOffsettingDays:7] dateJustBeforeMidnight]; //prizes expire in 7 days.
                 
                 
 
