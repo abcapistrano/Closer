@@ -99,7 +99,9 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
             ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
 
 
-            NSUInteger existingPrizesCount = [prizesArea.toDos count];
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"status == %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen]];
+
+            NSUInteger existingPrizesCount = [[prizesArea.toDos filteredArrayUsingPredicate:pred] count];
             NSUInteger maxPrizesCount = 10;
             if (existingPrizesCount > maxPrizesCount) {
                 return; // don't make prizes if there is more than 10
