@@ -311,7 +311,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         [todos filterUsingPredicate:completionDatePredicate];
         NSArray *local = [todos get];
         [todosHidingInsideProjects addObjectsFromArray:local];
-        NSLog(@"%@",project.name);
+      //  NSLog(@"%@",project.name);
 
     }];
     [todosHidingInsideProjects enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:inspectToDos];
