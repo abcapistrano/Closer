@@ -54,6 +54,8 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         self.cache.name = @"Cache";
 
 
+
+
         void (^cleanUp)(NSNotification *) = ^(NSNotification * note) {
 
             
@@ -121,8 +123,41 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
             }
 
-            NSArray *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:[prizesURL path]];
             
+            NSArray *availablePrizes = [YACYAMLKeyedUnarchiver unarchiveObjectWithFile:[prizesURL path]];
+            NSMutableArray *prizesWithBias = [NSMutableArray array];
+
+            [availablePrizes enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSDictionary* prize, NSUInteger idx, BOOL *stop) {
+
+                NSString *bias = prize[@"bias"];
+                NSUInteger iteration = 0;
+                
+                if ([bias isEqualToString:@"high"]) {
+
+                    iteration = 10;
+
+
+                } else if ([bias isEqualToString:@"normal"]) {
+
+                    iteration = 5;
+
+                } else if ([bias isEqualToString:@"low"]) {
+
+                    iteration = 1;
+
+                    
+                }
+
+                dispatch_apply(iteration, dispatch_get_current_queue(), ^(size_t BLAh) {
+
+                    
+                    [prizesWithBias addObject:prize];
+
+                });
+
+            }];
+
+
             Class todoClass = [self.things classForScriptingClass:@"to do"];
             SBElementArray *toDos = prizesArea.toDos;            
 
@@ -133,11 +168,10 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 [toDos addObject:toDo];
 
 
-                NSDictionary *prize = [[availablePrizes sample:1] lastObject];
-                
+                NSDictionary *prize = [[prizesWithBias grab:1] lastObject];
 
-                toDo.name = [prize valueForKey:@"activityName"];
-                toDo.tagNames = [prize valueForKey:@"tag"];
+                toDo.name = prize[@"activityName"];
+                toDo.tagNames = prize[@"tag"];
                 
                 toDo.dueDate = [[[NSDate date] dateByOffsettingDays:7] dateJustBeforeMidnight]; //prizes expire in 7 days.
                 
