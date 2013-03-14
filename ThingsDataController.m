@@ -87,6 +87,8 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
 
         };
 
+      
+
         self.applicationQuitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
@@ -134,12 +136,12 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 
                 if ([bias isEqualToString:@"high"]) {
 
-                    iteration = 10;
+                    iteration = 3;
 
 
                 } else if ([bias isEqualToString:@"normal"]) {
 
-                    iteration = 5;
+                    iteration = 2;
 
                 } else if ([bias isEqualToString:@"low"]) {
 
@@ -168,7 +170,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 [toDos addObject:toDo];
 
 
-                NSDictionary *prize = [[prizesWithBias grab:1] lastObject];
+                NSDictionary *prize = [[prizesWithBias sample:1] lastObject];
 
                 toDo.name = prize[@"activityName"];
                 toDo.tagNames = prize[@"tag"];
