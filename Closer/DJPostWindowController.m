@@ -12,7 +12,7 @@
 #import "Report+AdditionalMethods.h"
 #import "DJAppDelegate.h"
 #import "NSDate+MoreDates.h"
-
+#import "QLPreviewPanel+Secret.h"
 NSString * const API_KEY = @"412976472118083";
 
 @interface DJPostWindowController ()
@@ -41,25 +41,84 @@ NSString * const API_KEY = @"412976472118083";
     self.reportTextFile = [NSURL fileURLWithPathComponents:@[temporaryDirectory, name ]];
 
 
+    NSString *rulesPath = @"/Users/earltagra/Library/Mobile Documents/74ZAFF46HB~jp~informationarchitects~Writer/Documents/Rules/";
+    NSURL *rulesURL = [NSURL fileURLWithPath:rulesPath];
 
-    NSString *manifestPath = @"/Users/earltagra/Library/Mobile Documents/74ZAFF46HB~jp~informationarchitects~Writer/Documents/Rules/Manifest - Summary of All Rules.md";
-    NSURL *manifestURL = [NSURL fileURLWithPath:manifestPath];
+    NSMutableArray *itemsToShow = [NSMutableArray array];
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    [[fm contentsOfDirectoryAtURL:rulesURL includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:nil] enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSURL *rule, NSUInteger idx, BOOL *stop) {
+
+
+        [itemsToShow addObject:rule];
 
 
 
-    //NSURL *template =[[NSBundle mainBundle] URLForResource:@"PostTemplate" withExtension:@"md"];
+    }];
 
 
+    NSURL *template =[[NSBundle mainBundle] URLForResource:@"PostTemplate" withExtension:@"md"];
+    [[NSFileManager defaultManager] copyItemAtURL:template toURL:self.reportTextFile error:nil];
 
-    [[NSFileManager defaultManager] copyItemAtURL:manifestURL toURL:self.reportTextFile error:nil];
+    [itemsToShow addObject:self.reportTextFile];
 
-    [[NSWorkspace sharedWorkspace] openURL:self.reportTextFile];
+    self.quicklookItems = itemsToShow;
+
+    self.panel = [QLPreviewPanel sharedPreviewPanel];
+    self.panel.dataSource = self;
+    self.panel.delegate = self;
+
+
+    [self.panel updateController];
+    [self.panel setAutostarts:NO];
+
+
+    [self.panel makeKeyAndOrderFront:self];
+    [self.panel enterFullScreenMode:[NSScreen mainScreen] withOptions:nil];
+  //  [[NSWorkspace sharedWorkspace] openURL:self.reportTextFile];
 
 
     [self askForPermissions];
 
 }
 
+
+
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel {
+
+
+    return self.quicklookItems.count;
+
+}
+
+
+- (id <QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index {
+
+
+    return self.quicklookItems[index];
+
+}
+
+
+- (BOOL) acceptsPreviewPanelControl: (QLPreviewPanel *) p {
+
+    return YES;
+}
+
+- (void) beginPreviewPanelControl:(QLPreviewPanel *)panel {
+
+
+
+}
+
+- (void) endPreviewPanelControl:(QLPreviewPanel *)panel {
+
+    [NSApp terminate:self];
+
+
+    
+}
 
 - (void) askForPermissions {
 

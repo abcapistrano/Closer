@@ -10,6 +10,7 @@
 		FD1D0C8A16ABDE75006B4254 /* MTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1D0C8916ABDE75006B4254 /* MTRandom.m */; };
 		FD1D0C8D16ABE33E006B4254 /* NSString+GenericString.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1D0C8C16ABE33E006B4254 /* NSString+GenericString.m */; };
 		FD2A3EA116AEF724004E1448 /* NSDate+MoreDates.m in Sources */ = {isa = PBXBuildFile; fileRef = FD2A3E9F16AEF724004E1448 /* NSDate+MoreDates.m */; };
+		FD3B353816F17AF9003F8604 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3B353716F17AF8003F8604 /* Quartz.framework */; };
 		FD45979A168F409900D820DC /* Rules Format.mustache in Resources */ = {isa = PBXBuildFile; fileRef = FD459799168F409900D820DC /* Rules Format.mustache */; };
 		FD45979D1690038800D820DC /* NSApplication+SheetsAndBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */; };
 		FD4FBF6D16C6042500E549DE /* libYACYAML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4FBF6616C603DD00E549DE /* libYACYAML.a */; };
@@ -102,6 +103,8 @@
 		FD1D0C8C16ABE33E006B4254 /* NSString+GenericString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+GenericString.m"; sourceTree = "<group>"; };
 		FD2A3E9F16AEF724004E1448 /* NSDate+MoreDates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+MoreDates.m"; sourceTree = "<group>"; };
 		FD2A3EA016AEF724004E1448 /* NSDate+MoreDates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+MoreDates.h"; sourceTree = "<group>"; };
+		FD3B353716F17AF8003F8604 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		FD3B353B16F17C1B003F8604 /* QLPreviewPanel+Secret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QLPreviewPanel+Secret.h"; sourceTree = "<group>"; };
 		FD459799168F409900D820DC /* Rules Format.mustache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rules Format.mustache"; sourceTree = "<group>"; };
 		FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+SheetsAndBlocks.h"; path = "../NSApplication+SheetsAndBlocks.h"; sourceTree = "<group>"; };
 		FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+SheetsAndBlocks.m"; path = "../NSApplication+SheetsAndBlocks.m"; sourceTree = "<group>"; };
@@ -212,6 +215,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD3B353816F17AF9003F8604 /* Quartz.framework in Frameworks */,
 				FD4FBF7016C6044D00E549DE /* libresolv.dylib in Frameworks */,
 				FD4FBF6D16C6042500E549DE /* libYACYAML.a in Frameworks */,
 				FD4FBF6E16C6042500E549DE /* libYAML.a in Frameworks */,
@@ -316,6 +320,7 @@
 		FDED2AD31678C90E00BC416C = {
 			isa = PBXGroup;
 			children = (
+				FD3B353716F17AF8003F8604 /* Quartz.framework */,
 				FD4FBF6F16C6044D00E549DE /* libresolv.dylib */,
 				FD4FBF5F16C603DC00E549DE /* YACYAML.xcodeproj */,
 				FD861ECE16B2B7A40037E760 /* Accounts.framework */,
@@ -358,6 +363,7 @@
 		FDED2AE81678C90E00BC416C /* Closer */ = {
 			isa = PBXGroup;
 			children = (
+				FD3B353B16F17C1B003F8604 /* QLPreviewPanel+Secret.h */,
 				FD45979B1690038800D820DC /* NSApplication+SheetsAndBlocks.h */,
 				FD45979C1690038800D820DC /* NSApplication+SheetsAndBlocks.m */,
 				FD7C77E1168358650004030C /* NSApplication+ESSApplicationCategory.h */,
