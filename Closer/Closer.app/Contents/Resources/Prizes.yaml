@@ -1,0 +1,32 @@
+- activityName: "Read one chapter of an ebook."
+  tag: bookreading
+  
+- activityName: "[MTWThF] Read the oldest item (just one) from the Safari reading list."
+  tag: readingList
+  
+- activityName: "Watch a movie of any length."
+  tag: movie
+  
+- activityName: "Play a game for one session."
+  tag: game
+  
+- activityName: "Go to the pool and swim for as long as you want."
+  tag: swim
+  
+- activityName: "Watch a TV show of any length."
+  tag: tv
+  
+- activityName: "[MTWThF] Download a movie to put.io/torrent it."
+  tag: download
+  
+- activityName: "[MTWThF] Download a book to put.io/torrent it."
+  tag: download
+  
+- activityName: "[MTWThF] Download a music album or a discography to put.io/torrent it."
+  tag: download
+  
+- activityName: "[MTWThF] Read an item from the Things reading list which refers to an online document."
+  tag: readingList
+  
+- activityName: "[MTWThF] Download a TV show or a season to put.io/torrent it."
+  tag: download
