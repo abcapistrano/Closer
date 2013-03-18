@@ -1,32 +1,40 @@
 - activityName: "Read one chapter of an ebook."
   tag: bookreading
-  
-- activityName: "[MTWThF] Read the oldest item (just one) from the Safari reading list."
-  tag: readingList
-  
-- activityName: "Watch a movie of any length."
+  bias: high
+
+- activityName: "Finish watching a non-porn movie within a day."
   tag: movie
+  bias: normal
+  
+- activityName: "Finish watching a p movie (offline) of any length within a day."
+  tag: pornMovie
+  bias: low
   
 - activityName: "Play a game for one session."
   tag: game
+  bias: normal
   
-- activityName: "Go to the pool and swim for as long as you want."
-  tag: swim
-  
-- activityName: "Watch a TV show of any length."
+- activityName: "Watch an episode of a TV show of any length."
   tag: tv
+  bias: normal
+
+- activityName: "Read articles from the Red Queue."
+  tag: readArticles
+  bias: high
   
-- activityName: "[MTWThF] Download a movie to put.io/torrent it."
-  tag: download
+- activityName: "Build reading list."
+  tag: buildReadingList
+  bias: high
+
+- activityName: "View online porn."
+  tag: viewOnlinePorn
+  bias: low
   
-- activityName: "[MTWThF] Download a book to put.io/torrent it."
-  tag: download
+- activityName: "Go to the pool and swim for as long as you want"
+  tag: swim
+  bias: low
   
-- activityName: "[MTWThF] Download a music album or a discography to put.io/torrent it."
-  tag: download
-  
-- activityName: "[MTWThF] Read an item from the Things reading list which refers to an online document."
-  tag: readingList
-  
-- activityName: "[MTWThF] Download a TV show or a season to put.io/torrent it."
-  tag: download
+- activityName: "Wake up at anytime nothwithstanding Rule 4".
+  tag: wake
+  bias: low
+
