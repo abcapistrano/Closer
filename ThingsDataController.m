@@ -175,7 +175,7 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
                 toDo.name = prize[@"activityName"];
                 toDo.tagNames = prize[@"tag"];
                 
-                toDo.dueDate = [[[NSDate date] dateByOffsettingDays:7] dateJustBeforeMidnight]; //prizes expire in 7 days.
+                toDo.dueDate = [[[NSDate date] dateByOffsettingDays:30] dateJustBeforeMidnight]; //prizes expire in 30 days.
                 
                 
 
