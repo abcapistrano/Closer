@@ -1,13 +1,13 @@
-- activityName: "Read one chapter of an ebook."
+- activityName: "Read three chapters of an ebook."
   tag: bookreading
   bias: high
 
-- activityName: "Finish watching a non-porn movie within a day."
+- activityName: "Finish watching a non-p movie within a day."
   tag: movie
   bias: normal
   
 - activityName: "Finish watching a p movie (offline) of any length within a day."
-  tag: pornMovie
+  tag: pMovie
   bias: low
   
 - activityName: "Play a game for one session."
@@ -26,8 +26,8 @@
   tag: buildReadingList
   bias: high
 
-- activityName: "View online porn."
-  tag: viewOnlinePorn
+- activityName: "View online p."
+  tag: viewOnlineP
   bias: low
   
 - activityName: "Go to the pool and swim for as long as you want"
@@ -37,4 +37,12 @@
 - activityName: "Wake up at anytime nothwithstanding Rule 4".
   tag: wake
   bias: low
+  
+- activityName: "For 30 minutes, discover new p sites".
+  tag: discoverP
+  bias: low
+  
+- activityName: "For 30 minutes, discover new sites".
+  tag: discover
+  bias: normal
 
