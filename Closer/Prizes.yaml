@@ -10,7 +10,7 @@
   tag: pMovie
   bias: low
   
-- activityName: "Play a game for one session."
+- activityName: "Start three letterpress games"
   tag: game
   bias: normal
   
