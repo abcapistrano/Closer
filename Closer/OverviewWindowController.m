@@ -18,9 +18,6 @@
 
 @interface OverviewWindowController ()
 
-
-
-
 @end
 
 @implementation OverviewWindowController

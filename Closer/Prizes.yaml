@@ -1,6 +1,6 @@
 - activityName: "Read three chapters of an ebook."
   tag: bookreading
-  bias: high
+  bias: normal
 
 - activityName: "Finish watching a non-p movie within a day."
   tag: movie
@@ -8,7 +8,7 @@
   
 - activityName: "Finish watching a p movie (offline) of any length within a day."
   tag: pMovie
-  bias: low
+  bias: normal
   
 - activityName: "Start three letterpress games"
   tag: game
@@ -16,7 +16,7 @@
   
 - activityName: "Watch an episode of a TV show of any length."
   tag: tv
-  bias: normal
+  bias: high
 
 - activityName: "Read articles from the Red Queue."
   tag: readArticles
@@ -24,7 +24,7 @@
   
 - activityName: "Build reading list."
   tag: buildReadingList
-  bias: high
+  bias: normal
 
 - activityName: "View online p."
   tag: viewOnlineP
@@ -44,5 +44,5 @@
   
 - activityName: "For 30 minutes, discover new sites".
   tag: discover
-  bias: normal
+  bias: low
 
