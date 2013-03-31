@@ -53,47 +53,6 @@ NSString * const ADDED_ENTRIES_KEY = @"addedEntries";
         self.cache = [NSCache new];
         self.cache.name = @"Cache";
 
-
-
-
-        void (^cleanUp)(NSNotification *) = ^(NSNotification * note) {
-
-            
-            // delete entries in the log book which are more than a month old
-
-            NSDate *aMonthAgo = [[NSDate date] dateByOffsettingMonths:-1];;
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"completionDate < %@", aMonthAgo];
-
-            ThingsList *logbook = [self.things.lists objectWithName:@"Logbook"];
-            SBElementArray *toDos = logbook.toDos;
-            [toDos filterUsingPredicate:pred];
-
-            [toDos arrayByApplyingSelector:@selector(delete)];
-
-   
-            // delete overdue prizes
-
-            ThingsArea *prizesArea = [self.things.areas objectWithName:@"Prizes"];
-            NSPredicate *overDue = [NSPredicate predicateWithFormat:@"status == %@ AND dueDate < %@", [NSAppleEventDescriptor descriptorWithEnumCode:ThingsStatusOpen], [NSDate date] ];
-            SBElementArray *overDuePrizes = prizesArea.toDos;
-            [overDuePrizes filterUsingPredicate:overDue];
-            [overDuePrizes arrayByApplyingSelector:@selector(delete)];
-
-            // clear the trash
-
-            [self.things emptyTrash];
-
-
-
-        };
-
-      
-
-        self.applicationQuitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:cleanUp];
-
         void (^makePrizes)(NSNotification *) = ^(NSNotification *note) {
 
             
